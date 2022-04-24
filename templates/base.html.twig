@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <link rel="stylesheet" href="{{ asset("css/style.css") }}">
+            {# {{ encore_entry_link_tags('app') }} #}
+        {% endblock %}
+    </head>
+    <body>
+    <div id="turboContainer">
+        <header>
+            <nav>
+                <a href="{{ path('app_home') }}"><img src="/img/logo_planchetaplanche.png" alt="logo" class="logo"></a>
+                <ul>
+                    <li><a href="{{ path('app_shop') }}">Boutique</a></li>
+                    <li><a>Builder</a></li>
+                    <li><a href="{{ path('app_contact') }}">Contact</a></li>
+                </ul>
+                <ul>
+                    {% if not app.user %}
+                    <li><a href="{{ path('app_login') }}">Connexion</a></li>
+                    <li><a href="{{ path('app_register') }}">S'enregistrer</a></li>
+                    {% else %}
+                    <li><a href="{{ path('app_panier') }}"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                    <li><a href="{{ path('app_wishlist') }}"><i class="fa-regular fa-heart"></i></a></li>
+                    <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
+                    <li><a>Mon compte</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+        <footer>
+            <nav>
+                <ul>
+                    <li><a href="{{ path('app_faq') }}">FAQ</a></li>
+                    <li><a href="{{ path('app_legals') }}">Mentions légales</a></li>
+                </ul>
+                <a href="{{ path('app_home') }}"><img src="/img/logo_planchetaplanche.png" alt="logo" class="logo"></a>
+                <form>
+                    <input type="email" name="newsletter" placeholder="trucker67@gmail.com">
+                    <input type="submit" value="S'inscrire">
+                </form>
+            </nav>
+            <hr>
+            <p>
+                <i class="fa-brands fa-facebook fa-lg"></i>  
+                <i class="fa-brands fa-twitter fa-lg"></i>  
+                <i class="fa-brands fa-instagram fa-lg"></i>  
+                <i class="fa-brands fa-youtube fa-lg"></i>
+            </p>
+            <p>@PlancheTaPlanche 2022, All rights reserved</p>
+            <div>
+                <i class='fa fa-chevron-up'></i>
+            </div>
+
+            {% block javascripts %}
+                <script src="/js/script.js"></script>
+                {# {{ encore_entry_script_tags('app') }} #}
+            {% endblock %}
+        </footer>
+    </div>
+    </body>
+</html>

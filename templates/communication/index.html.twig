@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FAQ{% endblock %}
+
+{% block body %}
+<section id="faq">
+    <h1 class="titre">FAQ</h1>
+    <div id="faq-box">
+        <div id="faq-accordeon">
+            <div class="touche">
+                <i class="fa-solid fa-minus" id="touche0"></i>
+                <div>
+                    <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit, beatae debitis. Repudiandae, magni! Expedita harum quidem ut debitis aperiam distinctio accusantium exercitationem perspiciatis, eum numquam. Debitis assumenda illo veniam eos?</h3>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae voluptatibus unde excepturi repellat corrupti eum recusandae non aliquid obcaecati vitae earum ipsa saepe fuga natus atque, iusto nesciunt dolorum iure!</p>
+                </div>
+            </div>
+            <div class="touche">
+                <i class="fa-solid fa-plus" id="touche1"></i>
+                <div>
+                    <h3>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga excepturi iste, quasi accusantium, earum voluptas dolor eveniet aut debitis rerum quos totam et accusamus repellat vero consequatur minus deleniti qui?</h3>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae voluptatibus unde excepturi repellat corrupti eum recusandae non aliquid obcaecati vitae earum ipsa saepe fuga natus atque, iusto nesciunt dolorum iure!</p>
+                </div>
+            </div>
+            <div class="touche">
+                <i class="fa-solid fa-plus" id="touche2"></i>
+                <div>
+                    <h3>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio cum minima reprehenderit inventore et fugiat, illo nam corporis, perferendis a cupiditate harum blanditiis autem veritatis cumque consequatur ipsam, adipisci totam!</h3>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae voluptatibus unde excepturi repellat corrupti eum recusandae non aliquid obcaecati vitae earum ipsa saepe fuga natus atque, iusto nesciunt dolorum iure!</p>
+                </div>
+            </div>
+        </div> 
+        <div>
+            <img src="/img/faq.png" alt"faq image">
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block javascripts %}
+<script src="{{ asset("js/faq-accordeon.js") }}"></script>
+{% endblock %}

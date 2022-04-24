@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PlancheTaPlanche{% endblock %}
+
+{% block body %}
+    <div id="banner">
+        <img src="/img/home_banner.jpg" alt="home banner image">
+        <h1>Cherchiez-vous la planche de vos rêves ?</h1>
+    </div>
+
+    <section>
+        <h2>Peut-être la proposons-nous dêjà ?</h2>
+        <p>Nous avons en stock diverses planches ou produits(roues, roulements , grip etc...), nous esperons que vous trouverez votre bonheur !<br>
+        Voici un apperçu de la boutique :</p>
+        <div class="card-list">
+            {% for produit in miniBoutique %}
+                <div class="card">
+                    <img src="{{ asset(produit.image) }}" alt="{{ produit.slug }}">
+                    <p>{{ produit.nom }}</p>
+                    <div>
+                        <span>Taille :{{ produit.taille }}</span>
+                        <span class="price">{{ produit.prix }} €</span>
+                    </div>
+                    <div>
+                        <span><i class="fa-solid fa-star star"></i>({{ produit.etoiles|length }})</span>
+                        <a><i class="fa-solid fa-screwdriver"></i></a>
+                        <a><i class="fa-regular fa-heart"></i></a>
+                        <a><i class="fa-solid fa-cart-shopping"></i></a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section>
+        <h2>Ou alors souhaitez-vous la créer de toutes pièces ?</h2>
+        <div id="home-builder">
+            <div id="home-builder-descri">
+                <div>
+                    <h3>Assembler nos produits !</h3>
+                    <p>Grace a notre <a href"#">builder</a> vous pourrez plancher sur l'assemblage de nos produits pour créer votre bonheur !</p>
+                </div>
+                <div>
+                    <h3>Créer votre propre produit !</h3>
+                    <p>Une image vous tiens a coeur et vous aimeriez l'avoir sur une planche ? Pas de soucis on vous le fait ! <a href="#">Pray</a></p>
+                </div>
+                <div>
+                    <h3>Regarder les créations des autres utilisateurs !</h3>
+                    <p>D'autre plancheurs ont peut-être dêjà ce que vous souhaiter ?<a href="">redirect boutique filter:custom</a></p>
+                </div>
+            </div>
+            <div>
+                <img src="/img/home_builder.png" alt="home builder image">
+            </div>
+        </div>
+    </section>
+{% endblock %}
