@@ -48,7 +48,7 @@ class CommandeRepository extends ServiceEntityRepository
     public function findCurrentOrder($userId): ?Commande
     {
         return $this->createQueryBuilder('c')
-            ->Where('c.is_delivered = 0')
+            ->Where('c.is_ordered = 0')
             ->andWhere('c.user = :val')
             ->setParameter('val', $userId)
             ->getQuery()

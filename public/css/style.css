@@ -370,6 +370,10 @@ footer div{
 .card div a i{
     width: 25px;
     height: 25px;
+    color:black;
+}
+.card div a .fa-heart:hover{
+    color:red;
 }
     /* END CARTE PRODUIT */
     /* TABLE PANIER / WISHLIST */
@@ -383,6 +387,11 @@ footer div{
 }
 .table-recap tbody tr:nth-child(even) {
     background-color: rgb(233, 233, 233);
+}
+.table-recap tbody tr td:first-child{
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
 }
 .table-recap tbody tr td a img{
     width: 4em;

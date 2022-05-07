@@ -50,6 +50,11 @@ class Commande
      */
     private $paniers;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_ordered;
+
     public function __construct()
     {
         $this->paniers = new ArrayCollection();
@@ -156,5 +161,17 @@ class Commande
 
     public function generateNumeroCommande(){
         return time().rand(0,99999);
+    }
+
+    public function getIsOrdered(): ?bool
+    {
+        return $this->is_ordered;
+    }
+
+    public function setIsOrdered(bool $is_ordered): self
+    {
+        $this->is_ordered = $is_ordered;
+
+        return $this;
     }
 }

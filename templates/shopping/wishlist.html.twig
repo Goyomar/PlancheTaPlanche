@@ -24,8 +24,8 @@
         <tbody>
             {% for wish in wishlist %}
             <tr>
-                <td><a href="{{ path("show_shop", {'slug':wish.slug}) }}" class="mya"><img src="{{ asset(wish.image) }}" alt="{{ wish.slug }}">
-                {{ wish }}</a> (<a class="a-delete" href="{{ path("del_wishlist", {'slug':wish.slug}) }}">Supprimer</a>)</td>
+                <td><a href="{{ path("show_shop", {'slug':wish.slug}) }}" class="mya"><img src="{{ asset(wish.image) }}" alt="{{ wish.slug }}"></a>
+                <a href="{{ path("show_shop", {'slug':wish.slug}) }}" class="mya">{{ wish }}</a> <a class="a-delete" href="{{ path("del_wishlist", {'slug':wish.slug}) }}">Supprimer</a></td>
                 <td class="center">{{ wish.prix }} €</td>
                 <td class="center">{{ wish.promo == null ? "" : wish.promo ~" %"}}</td>
                 <td class="center"><a><i class="fa-solid fa-cart-shopping"></i></a></td>

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Panier;
 use App\Entity\Produit;
 use App\Entity\Commande;
 use Monolog\DateTimeImmutable;
@@ -18,25 +19,72 @@ class ShoppingController extends AbstractController
      */
     public function index(ManagerRegistry $doctrine): Response
     {
-        $user = $this->getUser();
+        $user = $this->getUser(); // a retravailler quand le systeme de commande sera fonctionnel
 
         if ($doctrine->getRepository(Commande::class)->findCurrentOrder($user->getId())) { // panier besoin de commande pour exister
-            $commande = $doctrine->getRepository(Commande::class)->findCurrentOrder($user->getId());
-            $paniers = $commande->getPaniers()->toArray();
+            $commande = $doctrine->getRepository(Commande::class)->findCurrentOrder($user->getId()); // 
+            $paniers = $commande->getPaniers();
+            dump($paniers->toArray());
         } else {
             $commande = new Commande();
             $commande->setNumero($commande->generateNumeroCommande())
                 ->setCreatedAt(new DateTimeImmutable('now'))
                 ->setTotal(0)
                 ->setUser($user)
-                ->setIsDelivered(false);
+                ->setIsDelivered(false)
+                ->setIsOrdered(false);
+            $paniers = [];
         }
-        dump($paniers);
-
+        
         return $this->render('shopping/index.html.twig', [
             'paniers' => $paniers,
         ]);
     }
+
+    /**
+     * @Route("/panier/add/{slug}", name="add_panier")
+     */
+    public function addPanier(ManagerRegistry $doctrine, Produit $produit, Request $request): Response
+    {
+        $em = $doctrine->getManager();
+        $paniers = $this->getUser()->getPaniers(); 
+
+        $found = false;
+        if (!empty($paniers)){ // on verifie que l'utilisateur possede deja des article dans son panier
+            foreach($paniers as $panier) { // si c'est le cas on va les parcourir pour savoir si le produit voulu est deja dans un panier
+                if ($panier->getProduit() === $produit) { // si c'est le cas on augmente la quantite voulu de 1
+                    $panier->setQte( ($panier->getQte() + 1) );
+                    $found = true;
+                }
+            }
+        }
+
+        if(!$found){ // sinon on lui ajoute le produit receptione en recuperant sa commande actuel
+            $newPanier = new Panier();
+            $newPanier->setQte(1)
+                      ->setUser($this->getUser())
+                      ->setProduit($produit)
+                      ->setCommande($doctrine->getRepository(Commande::class)->findCurrentOrder($this->getUser()->getId()));
+
+            $em->persist($newPanier); // on valide le panier
+        }
+        $em->flush(); // et on le sauvegarde 
+        
+        return $this->redirect($request->headers->get('referer'));  // Reprend le http d'ou vient l'utilisateur et le renvoie dessus !
+    }
+
+    /**
+     * @Route("/panier/delete/{id}", name="del_panier")
+     */
+    public function delPanier(ManagerRegistry $doctrine, Panier $panier, Request $request)
+    {
+        $this->getuser()->removePanier($panier);
+        $doctrine->getManager()->flush();
+
+        return $this->redirect($request->headers->get('referer'));  // Reprend le http d'ou vient l'utilisateur et le renvoie dessus !
+    }
+
+
 
     /**
      * @Route("/wishlist", name="app_wishlist")
@@ -44,7 +92,7 @@ class ShoppingController extends AbstractController
     public function wishlist(): Response
     {
         return $this->render('shopping/wishlist.html.twig', [
-            'wishlist' => $this->getUser()->getWishlist()
+            'wishlist' => $this->getUser()->getWishlist() // on recupere les produits qui ont ete enregistré dans la collection par l'utilisateur
         ]);
     }
 
@@ -59,7 +107,7 @@ class ShoppingController extends AbstractController
         return $this->redirect($request->headers->get('referer'));  // Reprend le http d'ou vient l'utilisateur et le renvoie dessus !
     }
 
-        /**
+    /**
      * @Route("/wishlist/del/{slug}", name="del_wishlist")
      */
     public function delWishlist(ManagerRegistry $doctrine, Produit $produit, Request $request): Response
