@@ -393,6 +393,19 @@ footer div{
     align-items: center;
     justify-content: space-around;
 }
+.qte a{
+    padding: 0.3em 0.5em;
+    margin:  0.5em;
+    border-radius: 50%;
+    border:2px solid var(--gris);
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+.qte a:hover{
+    background-color: var(--gris);
+    opacity: 0.5;
+}
 .table-recap tbody tr td a img{
     width: 4em;
     height: 4em;

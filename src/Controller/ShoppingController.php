@@ -74,7 +74,7 @@ class ShoppingController extends AbstractController
     }
 
     /**
-     * @Route("/panier/delete/{id}", name="del_panier")
+     * @Route("/panier/delete/{slug}", name="del_panier")
      */
     public function delPanier(ManagerRegistry $doctrine, Panier $panier, Request $request)
     {
@@ -82,6 +82,41 @@ class ShoppingController extends AbstractController
         $doctrine->getManager()->flush();
 
         return $this->redirect($request->headers->get('referer'));  // Reprend le http d'ou vient l'utilisateur et le renvoie dessus !
+    }
+
+    /**
+     * @Route("/panier/plus/{slug}", name="plus_panier")
+     */
+    public function plusPanier(ManagerRegistry $doctrine, Produit $produit, Request $request)
+    {
+        $em = $doctrine->getManager();
+        $paniers = $this->getUser()->getPaniers();
+
+        foreach($paniers as $panier) { // si c'est le cas on va les parcourir pour savoir si le produit voulu est deja dans un panier
+            if ($panier->getProduit() === $produit) { // si c'est le cas on augmente la quantite voulu de 1
+                $panier->setQte( ($panier->getQte() + 1) );
+            }
+        }
+        $em->flush();
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
+     * @Route("/panier/minus/{slug}", name="minus_panier")
+     */
+    public function minusPanier(ManagerRegistry $doctrine, Produit $produit, Request $request)
+    {
+        $em = $doctrine->getManager();
+        $paniers = $this->getUser()->getPaniers();
+
+        foreach($paniers as $panier) {
+            if ($panier->getProduit() === $produit) {
+                if($panier->getQte() > 1)
+                $panier->setQte( ($panier->getQte() - 1) );
+            }
+        }
+        $em->flush();
+        return $this->redirect($request->headers->get('referer'));
     }
 
 
