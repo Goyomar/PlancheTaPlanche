@@ -101,6 +101,7 @@ header nav ul li a:hover{
 }
 #faq-accordeon .touche{
     display: flex;
+    cursor: pointer;
 }
 
 #faq-accordeon div i{
@@ -277,6 +278,18 @@ footer div{
 }
 .disabled{
     pointer-events: none;
+}
+.badge{
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    background-color: rgba(95, 69, 53, 0.76);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    bottom: 8px;
+    right: 8px;
 }
     /* FORM */
 .form-full{

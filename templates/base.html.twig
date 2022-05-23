@@ -26,8 +26,12 @@
                     <li><a href="{{ path('app_login') }}">Connexion</a></li>
                     <li><a href="{{ path('app_register') }}">S'enregistrer</a></li>
                     {% else %}
-                    <li><a href="{{ path('app_panier') }}"><i class="fa-solid fa-cart-shopping"></i></a></li>
-                    <li><a href="{{ path('app_wishlist') }}"><i class="fa-regular fa-heart"></i></a></li>
+                    <li>
+                        <a href="{{ path('app_panier') }}"><i class="fa-solid fa-cart-shopping"><span class="badge">{{ app.user.PaniersTotal}}</span></i></a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_wishlist') }}"><i class="fa-solid fa-heart"><span class="badge">{{ app.user.wishlist|length}}</span></i></a>
+                    </li>
                     <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
                     <li><a>Mon compte</a></li>
                     {% endif %}

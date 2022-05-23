@@ -355,6 +355,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getPaniersTotal(): int
+    {
+        $return = 0;
+        foreach ($this->paniers as $panier) {
+            $return += $panier->getQte();
+        }
+        return $return;
+    }
+
     /**
      * @return Collection<int, Etoile>
      */

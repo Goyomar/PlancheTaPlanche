@@ -152,4 +152,17 @@ class ShoppingController extends AbstractController
 
         return $this->redirect($request->headers->get('referer'));  // Reprend le http d'ou vient l'utilisateur et le renvoie dessus !
     }
+
+    /**
+     * @Route("/order", name="order")
+     */
+    public function order()
+    {
+        $user = $this->getUser();
+        return $this->render('shopping/order.html.twig', [
+            'commande' => $user->getPaniers()[0]->getCommande(),
+            'paniers' => $user->getPaniers(),
+            'adresses' => $user->getAdresses()
+        ]);
+    }
 }

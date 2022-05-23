@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande{% endblock %}
+
+{% block body %}
+    <div class="center">
+        <h1 class="titre">Commande</h1>
+
+        <h2>Récapitulatif commande : {{commande}}</h2>
+
+        <table class="table-recap">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Prix</th>
+                    <th>Quantité</th>
+                    <th>Promo</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            {% set total = 0 %}
+            <tbody>
+                {% for panier in paniers %}
+                <tr>
+                    <td><a href="{{ path("show_shop", {'slug':panier.produit.slug}) }}" class="mya"><img src="{{ asset(panier.produit.image) }}" alt="{{ panier.produit.slug }}"></a>
+                    <a href="{{ path("show_shop", {'slug':panier.produit.slug}) }}" class="mya">{{ panier.produit }}</a>
+                    <td class="center">{{ panier.produit.prix }} €</td>
+                    <td class="center qte">{{ panier.qte }}</td>
+                    <td class="center">{{ panier.produit.promo == null ? "" : panier.produit.promo ~" %"}}</td>
+                    <td class="center">{{ panier.total }} €</td>
+                    {% set total = total + panier.total %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <p><strong>Total : {{ total }} €</strong></p>
+    </div>
+
+{# ADRRESSE FACTU #}
+
+{# ADRRESSE PAYMENT #}
+
+{# PAYMENT API #}
+
+{% endblock %}
