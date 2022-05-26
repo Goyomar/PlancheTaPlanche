@@ -201,6 +201,14 @@ header nav ul li a:hover{
 }
 /* END SHOW_SHOP */
 
+/* ORDER */
+#order-adress{
+    display: flex;
+}
+#order-adress-factu, #order-adress-delivry{
+    width: 32em;
+}
+/* END ORDER */
 
 
 /* FOOTER */

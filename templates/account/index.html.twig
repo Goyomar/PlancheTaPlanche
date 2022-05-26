@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block body %}
+
+
+<h1 class="center">Mon compte</h1>
+
+<ul>
+    <li>Nom : {{ app.user.nom }}</li>
+    <li>Prenom : {{ app.user.prenom }}</li>
+    <li>Compte crée le : {{ app.user.createdAt|date('d-m-Y') }}</li>
+    <li>Email : {{ app.user.email }}</li>
+</ul>
+
+<ul>
+    {% for adresse in app.user.adresses %}
+        <li>{{ adresse }} <a href="{{ path('del_adresse',{id:adresse.id}) }}" class="a-delete">Supprimer</a></li>
+    {% endfor %}
+</ul>
+
+<table class="table-recap">
+    <thead>
+        <tr>
+            <th>N°Commande</th>
+            <th>Total</th>
+            <th>Achetée le</th>
+            <th>Pdf</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for commande in commandes %}
+        <tr>
+            <td class="center">{{ commande }}</td>
+            <td class="center qte">{{ commande.total }} €</td>
+            <td class="center">{{ commande.createdAt|date('d-m-Y') }}</td>
+            <td class="center"></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

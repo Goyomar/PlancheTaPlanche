@@ -33,7 +33,7 @@
                         <a href="{{ path('app_wishlist') }}"><i class="fa-solid fa-heart"><span class="badge">{{ app.user.wishlist|length}}</span></i></a>
                     </li>
                     <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
-                    <li><a>Mon compte</a></li>
+                    <li><a href="{{ path('app_account') }}">Mon compte</a></li>
                     {% endif %}
                 </ul>
             </nav>

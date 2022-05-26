@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Panier;
 use App\Entity\Produit;
 use App\Entity\Commande;
+use App\Form\AdresseType;
 use Monolog\DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -159,10 +160,23 @@ class ShoppingController extends AbstractController
     public function order()
     {
         $user = $this->getUser();
+        $formLivraison = $this->createForm(AdresseType::class);
+        $formFactu = $this->createForm(AdresseType::class);
+
+        if ($formFactu->isSubmitted() && $formFactu->isValid()){ // a modifier en prenant en compte API PAYMENT
+            dump("coucou Factu");
+        }
+
+        if ($formLivraison->isSubmitted() && $formLivraison->isValid()){// a modifier en prenant en compte API PAYMENT
+            dump("coucou Livraison");
+        }
+
         return $this->render('shopping/order.html.twig', [
             'commande' => $user->getPaniers()[0]->getCommande(),
             'paniers' => $user->getPaniers(),
-            'adresses' => $user->getAdresses()
+            'adresses' => $user->getAdresses(),
+            'formLivraison' => $formLivraison->createView(),
+            'formFactu' => $formFactu->createView()
         ]);
     }
 }
