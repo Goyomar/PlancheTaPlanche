@@ -14,31 +14,35 @@
     <li>Email : {{ app.user.email }}</li>
 </ul>
 
+<a class="mya btn-account" href="{{ path("edit_account") }}">Modifier</a>
+
 <ul>
     {% for adresse in app.user.adresses %}
         <li>{{ adresse }} <a href="{{ path('del_adresse',{id:adresse.id}) }}" class="a-delete">Supprimer</a></li>
     {% endfor %}
 </ul>
 
-<table class="table-recap">
-    <thead>
-        <tr>
-            <th>N°Commande</th>
-            <th>Total</th>
-            <th>Achetée le</th>
-            <th>Pdf</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for commande in commandes %}
-        <tr>
-            <td class="center">{{ commande }}</td>
-            <td class="center qte">{{ commande.total }} €</td>
-            <td class="center">{{ commande.createdAt|date('d-m-Y') }}</td>
-            <td class="center"></td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+{% if commandes is not empty %}
+    <table class="table-recap">
+        <thead>
+            <tr>
+                <th>N°Commande</th>
+                <th>Total</th>
+                <th>Achetée le</th>
+                <th>Pdf</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for commande in commandes %}
+            <tr>
+                <td class="center">{{ commande }}</td>
+                <td class="center qte">{{ commande.total }} €</td>
+                <td class="center">{{ commande.createdAt|date('d-m-Y') }}</td>
+                <td class="center"></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
 
 {% endblock %}

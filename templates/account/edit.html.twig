@@ -1,0 +1,25 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Modifier mon compte{% endblock %}
+
+{% block body %}
+
+    <div class="form-full">
+        <h1>Modifier mon compte</h1>
+
+        <strong>Modifier les informations personelles</strong>
+        {{ form_start(form) }}
+            {{ form_row(form.nom) }}
+            {{ form_row(form.prenom) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.newletter) }}
+        {{ form_end(form) }}
+
+        <strong>Réinitilisater le mot de passe</strong>
+        {{ form_start(reset) }}
+            {{ form_row(reset.oldPassword) }}
+            {{ form_row(reset.newPassword) }}
+            {{ form_row(reset.reset) }}
+        {{ form_end(reset) }}
+    </div>
+{% endblock %}
