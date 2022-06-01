@@ -94,6 +94,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $isVerified = false;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Skateboard::class, mappedBy="user")
+     */
+    private $skateboards;
+
     public function __construct()
     {
         $this->adresses = new ArrayCollection();
@@ -102,6 +107,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->paniers = new ArrayCollection();
         $this->etoiles = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
+        $this->skateboards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -438,5 +444,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString(): string{
         return ucfirst($this->prenom)." ".strtoupper(mb_substr($this->nom,0,1));
+    }
+
+    /**
+     * @return Collection<int, Skateboard>
+     */
+    public function getSkateboards(): Collection
+    {
+        return $this->skateboards;
+    }
+
+    public function addSkateboard(Skateboard $skateboard): self
+    {
+        if (!$this->skateboards->contains($skateboard)) {
+            $this->skateboards[] = $skateboard;
+            $skateboard->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSkateboard(Skateboard $skateboard): self
+    {
+        if ($this->skateboards->removeElement($skateboard)) {
+            // set the owning side to null (unless already changed)
+            if ($skateboard->getUser() === $this) {
+                $skateboard->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

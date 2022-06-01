@@ -44,6 +44,12 @@ class Skateboard
      */
     private $composer;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="skateboards")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function __construct()
     {
         $this->composer = new ArrayCollection();
@@ -122,6 +128,18 @@ class Skateboard
     public function removeComposer(Produit $composer): self
     {
         $this->composer->removeElement($composer);
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

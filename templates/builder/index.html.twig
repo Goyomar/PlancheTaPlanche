@@ -6,35 +6,37 @@
 
 <div class="center">
     <h1>Builder</h1>
-    <div id="builder-box">
+    <div id="builder">
         <div id="builder-left">
-            <div>
 
+            <div class="builder-box">
+                <a href="{{ path("redirect_builder",{'idCategorie':3}) }}"><img src="{{ asset("img/builderGrip.png") }}" alt="grip"></a>
+            </div>
+            <div class="builder-box">
+                <a href="{{ path("redirect_builder",{'idCategorie':1}) }}"><img src="{{ asset("img/builderBoard.png") }}" alt="Board"></a>
+            </div>
+            <div class="builder-box">
+                <a href="{{ path("redirect_builder",{'idCategorie':5}) }}"><img src="{{ asset("img/builderScrews.png") }}" alt="Screws"></a>
             </div>
 
-            <div>
-
-            </div>
-
-            <div>
-
-            </div>
         </div>
 
-        <p>Coucou</p>
+        {{ form_start(form) }}
+
+        {{ form_end(form) }}
 
         <div id="builder-right">
-            <div>
 
+            <div class="builder-box">
+                <a href="{{ path("redirect_builder",{'idCategorie':4}) }}"><img src="{{ asset("img/builderTruck.png") }}" alt="Truck"></a>
+            </div>
+            <div class="builder-box">
+                <a href="{{ path("redirect_builder",{'idCategorie':6}) }}"><img src="{{ asset("img/builderBearings.png") }}" alt="Bearings"></a>
+            </div>
+            <div class="builder-box">
+                <a href="{{ path("redirect_builder",{'idCategorie':2}) }}"><img src="{{ asset("img/builderWheels.png") }}" alt="Wheels"></a>
             </div>
 
-            <div>
-
-            </div>
-
-            <div>
-
-            </div>
         </div>
     </div>
     

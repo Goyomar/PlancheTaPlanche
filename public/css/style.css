@@ -211,17 +211,29 @@ header nav ul li a:hover{
 /* END ORDER */
 
 /* BUILDER */
-#builder-box{
+#builder{
     height:700px;
     width:100%;
-    background-color: blue;
     display: flex;
-    justify-content: space-evenly;
+    background-color: lightgray;
+    justify-content: space-around;
     align-items: center;
 }
 #builder-left, #builder-right{
-    width: 20%;
-    background-color: red;
+    height: 700px;
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.builder-box{
+    width: 100%;
+    height: 150px;
+}
+.builder-box img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
 /* END BUILDER */
 
