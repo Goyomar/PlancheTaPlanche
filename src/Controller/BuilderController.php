@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Produit;
 use App\Entity\Skateboard;
 use App\Form\SkateboardType;
 use Doctrine\Persistence\ManagerRegistry;
@@ -35,7 +36,7 @@ class BuilderController extends AbstractController
         $skateboard = new Skateboard();
         $form = $this->createForm(SkateboardType::class, $skateboard);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()){ // a test
             if ($this->getUser()) {
                 if($builderSession["grip"]->getCategorie() === "grip" && $builderSession["board"]->getCategorie() === "board" &&
                     $builderSession["screws"]->getCategorie() === "screws" && $builderSession["truck"]->getCategorie() === "truck" &&
@@ -66,8 +67,10 @@ class BuilderController extends AbstractController
             
         }
         
+        dump($builderSession);
         return $this->render('builder/index.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'builder' => $builderSession
         ]);
     }
 
@@ -76,8 +79,8 @@ class BuilderController extends AbstractController
      */
     public function redirectBuilder(int $idCategorie, Session $session)
     {
-        if ($idCategorie === "3" || $idCategorie === "1" || $idCategorie === "5" ||  // marche pas
-            $idCategorie === "4" || $idCategorie === "6" || $idCategorie === "2") {
+        if ($idCategorie === 3 || $idCategorie === 1 || $idCategorie === 5 ||  // marche pas
+            $idCategorie === 4 || $idCategorie === 6 || $idCategorie === 2) {
             $filterSession = [
                 "categorie" => $idCategorie,
                 "promo" => null,
@@ -96,6 +99,46 @@ class BuilderController extends AbstractController
         $session->set("filter",$filterSession);
         return $this->redirectToRoute("app_shop");
     }
+
+    /**
+     * @Route("/builder/add/{slug}", name="add_builder")
+     */
+    public function addBuilder(Produit $product, Session $session)
+    {
+        if (!$session->get("builder")) {
+            $builderSession = [
+                "grip" => null,
+                "board" => null,
+                "screws" => null,
+                "truck" => null,
+                "bearings" => null,
+                "wheels" => null
+            ];
+            $session->set("builder", $builderSession);
+        } else {
+            $builderSession = $session->get("builder");
+        }
+        $builderSession[$product->getCategorie()->getNom()] = $product;
+        $session->set("builder", $builderSession);
+
+        return $this->redirectToRoute("app_builder");
+    }
+
+    /**
+     * @Route("/builder/delete/{slug}", name="del_builder")
+     */
+    public function delBuilder(Produit $product, Session $session, Request $request)
+    {
+        $builderSession = $session->get("builder");
+        $builderSession[$product->getCategorie()->getNom()] = null; // je sors le produit du builder
+        $session->set("builder", $builderSession);
+
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
+     * @Route("/builder/transform", name="transform_session")
+     */
 }
 
 // function transformer en panier, builder en session always un nouveau quand save reset session, quand save avoir son setup dans mon compte, 
@@ -108,4 +151,3 @@ class BuilderController extends AbstractController
 // vue liste des skates et détails
 // btn transform skate to cart
 // dans my account accéder a ses planches et pouvoir les edits
-// mettre coeur au hover des produits dans builder

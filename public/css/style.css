@@ -231,9 +231,8 @@ header nav ul li a:hover{
     height: 150px;
 }
 .builder-box img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
+    width:153.6px;
+    height:150px;
 }
 /* END BUILDER */
 
@@ -305,7 +304,7 @@ footer div{
 }
 .mya{
     text-decoration: none;
-    color:var(--orange)
+    color:var(--orange);
 }
 .a-delete{
     text-decoration: none;
@@ -437,8 +436,23 @@ footer div{
     height: 25px;
     color:black;
 }
+.card div a .mya{
+    color:var(--orange);
+}
+.card div a .mya.fa-heart{
+    color:red;
+}
+.card div a .mya:hover{
+    color:black !important;
+}
 .card div a .fa-heart:hover{
     color:red;
+}
+.card div a .fa-screwdriver:hover{
+    color:var(--orange);
+}
+.card div a .fa-cart-shopping:hover{
+    color:rgb(56, 99, 218);
 }
     /* END CARTE PRODUIT */
     /* TABLE PANIER / WISHLIST */

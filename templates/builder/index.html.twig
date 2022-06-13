@@ -10,13 +10,13 @@
         <div id="builder-left">
 
             <div class="builder-box">
-                <a href="{{ path("redirect_builder",{'idCategorie':3}) }}"><img src="{{ asset("img/builderGrip.png") }}" alt="grip"></a>
+                <a href="{{ path("redirect_builder",{'idCategorie':3}) }}"><img src="{{ (builder.grip == null) ? asset("img/builderGrip.png") : asset(builder.grip.image) }}" alt="grip"></a>
             </div>
             <div class="builder-box">
-                <a href="{{ path("redirect_builder",{'idCategorie':1}) }}"><img src="{{ asset("img/builderBoard.png") }}" alt="Board"></a>
+                <a href="{{ path("redirect_builder",{'idCategorie':1}) }}"><img src="{{ (builder.board == null) ? asset("img/builderBoard.png") : asset(builder.board.image) }}" alt="Board"></a>
             </div>
             <div class="builder-box">
-                <a href="{{ path("redirect_builder",{'idCategorie':5}) }}"><img src="{{ asset("img/builderScrews.png") }}" alt="Screws"></a>
+                <a href="{{ path("redirect_builder",{'idCategorie':5}) }}"><img src="{{ (builder.screws == null) ? asset("img/builderScrews.png") : asset(builder.screws.image) }}" alt="Screws"></a>
             </div>
 
         </div>
@@ -28,13 +28,13 @@
         <div id="builder-right">
 
             <div class="builder-box">
-                <a href="{{ path("redirect_builder",{'idCategorie':4}) }}"><img src="{{ asset("img/builderTruck.png") }}" alt="Truck"></a>
+                <a href="{{ path("redirect_builder",{'idCategorie':4}) }}"><img src="{{ (builder.truck == null) ? asset("img/builderTruck.png") : asset(builder.truck.image) }}" alt="Truck"></a>
             </div>
             <div class="builder-box">
-                <a href="{{ path("redirect_builder",{'idCategorie':6}) }}"><img src="{{ asset("img/builderBearings.png") }}" alt="Bearings"></a>
+                <a href="{{ path("redirect_builder",{'idCategorie':6}) }}"><img src="{{ (builder.bearings == null) ? asset("img/builderBearings.png") : asset(builder.bearings.image) }}" alt="Bearings"></a>
             </div>
             <div class="builder-box">
-                <a href="{{ path("redirect_builder",{'idCategorie':2}) }}"><img src="{{ asset("img/builderWheels.png") }}" alt="Wheels"></a>
+                <a href="{{ path("redirect_builder",{'idCategorie':2}) }}"><img src="{{ (builder.wheels == null) ? asset("img/builderWheels.png") : asset(builder.wheels.image) }}" alt="Wheels"></a>
             </div>
 
         </div>
