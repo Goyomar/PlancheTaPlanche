@@ -170,4 +170,16 @@ class ShopController extends AbstractController
             'slug' => $produit->getSlug()
         ]);
     }
+
+    /**
+     * @Route("/comment/delete/{id}", name="del_comment")
+     */
+    public function delComment(ManagerRegistry $doctrine, Commentaire $commentaire, Request $request)
+    {
+        $em = $doctrine->getManager();
+        $em->remove($commentaire);
+        $em->flush();
+
+        return $this->redirect($request->headers->get('referer'));
+    }
 }

@@ -125,7 +125,7 @@ class BuilderController extends AbstractController
     }
 
     /**
-     * @Route("/builder/delete/{slug}", name="del_builder")
+     * @Route("/builder/del/{slug}", name="del_builder")
      */
     public function delBuilder(Produit $product, Session $session, Request $request)
     {
@@ -147,7 +147,6 @@ class BuilderController extends AbstractController
 
 
 // envoye du tout et reset la session
-// redirect to boutique avec filter de la box et highlight le produit qui est deja dan sle builder 
 // vue liste des skates et détails
 // btn transform skate to cart
 // dans my account accéder a ses planches et pouvoir les edits

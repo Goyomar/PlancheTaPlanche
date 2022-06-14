@@ -10,16 +10,30 @@
         <img src="{{ asset(produit.image) }}" alt="image produit">
     </div>
     <div id="show-shop-descri">
-        <p>{{ produit.description }}</p>
-        <p>
+        <p class="center">{{ produit.description }}</p>
+        <p class="center">
             Taille : {{ produit.taille }}<br>
             Categorie : {{ produit.categorie }}<br>
             Prix : <span class="price">{{ produit.prix }} €</span><br>
         </p>
         <div>
-            <a><i class="fa-solid fa-screwdriver fa-2xl"></i></a>
-            <a><i class="fa-regular fa-heart fa-2xl"></i></a>
-            <a><i class="fa-solid fa-cart-shopping fa-2xl"></i></a>
+            {% if app.session.get("builder")[produit.categorie.nom] != null %}
+                {% if app.session.get("builder")[produit.categorie.nom].nom is same as(produit.nom) %}
+                    <a href="{{ path("del_builder", {'slug':produit.slug}) }}"><i class="fa-solid fa-screwdriver fa-2xl mya"></i></a>
+                {% else %}
+                    <a href="{{ path("add_builder", {'slug':produit.slug}) }}"><i class="fa-solid fa-screwdriver fa-2xl"></i></a>
+                {% endif %}
+            {% else %}
+                <a href="{{ path("add_builder", {'slug':produit.slug}) }}"><i class="fa-solid fa-screwdriver fa-2xl"></i></a>
+            {% endif %}
+
+            {% if produit in app.user.wishlist %}
+                <a href="{{ path("del_wishlist", {'slug':produit.slug}) }}"><i class="fa-regular fa-heart fa-2xl a-delete"></i></a>
+            {% else %}
+                <a href="{{ path("add_wishlist", {'slug':produit.slug}) }}"><i class="fa-regular fa-heart fa-2xl"></i></a>
+            {% endif %}
+
+            <a href="{{ path("add_panier", {'slug':produit.slug}) }}"><i class="fa-solid fa-cart-shopping fa-2xl"></i></a>
         </div>
     </div>
 </section>
@@ -27,9 +41,8 @@
     <div>
     {% if app.user %}
         {% if vote != null %}
-        {% set note = app.user.etoiles.values.0.note %}
             {% for i in 1..5 %}
-                {% if i <= note %}
+                {% if i <= vote.note %}
                     <a class="star-gray" href="{{ path("edit_etoile", {'slug':produit.slug, 'note':i}) }}"><i class="fa-solid fa-star fa-2xl star" id="star{{ i }}"></i>  </a>
                 {% else %}
                     <a class="star-gray" href="{{ path("edit_etoile", {'slug':produit.slug, 'note':i}) }}"><i class="fa-solid fa-star fa-2xl star-gray" id="star{{ i }}"></i>  </a>
@@ -63,7 +76,12 @@
     {% for comment in produit.commentaires %}
         {% if comment.isActive %}
         <div>
-            <p><i class="fa-solid fa-circle-user"></i> <strong>{{ comment.user }}</strong> ({{ comment.createdAt|date('d-m-Y') }}) : <br> {{ comment }}</p>
+            <p><i class="fa-solid fa-circle-user"></i> <strong>{{ comment.user }}</strong> ({{ comment.createdAt|date('d-m-Y') }}) : <br>
+            {{ comment }} 
+            {% if app.user is same as(comment.user) %}
+                <br><a href="{{ path("del_comment", {'id':comment.id}) }}" class="a-delete">Supprimer</a>
+            {% endif %}    
+            </p>
         </div>
         {% endif %}
     {% endfor %}

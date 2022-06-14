@@ -190,6 +190,18 @@ header nav ul li a:hover{
     display: flex;
     justify-content: space-evenly;
 }
+#show-shop-descri div a .fa-screwdriver:hover{
+    color:var(--orange);
+}
+#show-shop-descri div a .fa-heart:hover{
+    color: red;
+}
+#show-shop-descri div a, #show-shop-descri div a .mya:hover, #show-shop-descri div a .a-delete:hover{
+    color:black;
+}
+#show-shop-descri div a .fa-cart-shopping:hover{
+    color:rgb(56, 99, 218);
+}
 #show-shop-star{
     display: flex;
     justify-content: space-evenly;
@@ -283,11 +295,8 @@ footer div{
 .dnone{
     display: none;
 }
-.star{
+.star, .star-bis{
     color:rgb(255, 149, 41);
-}
-.star-bis{
-    color: rgb(255, 149, 41);
 }
 .star-gray{
     text-decoration: none;
