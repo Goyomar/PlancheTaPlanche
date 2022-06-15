@@ -160,7 +160,7 @@ class Commande
     }
 
     public function generateNumeroCommande(){
-        return time().rand(0,99999);
+        return rand(0,9).time().rand(0,9);
     }
 
     public function getIsOrdered(): ?bool

@@ -15,7 +15,7 @@
         <div class="card-list">
             {% for produit in miniBoutique %}
                 <div class="card">
-                    <img src="{{ asset(produit.image) }}" alt="{{ produit.slug }}">
+                    <img src="{{ asset('img_produit/' ~ produit.image) }}" alt="{{ produit.slug }}">
                     <p>{{ produit.nom }}</p>
                     <div>
                         <span>Taille :{{ produit.taille }}</span>
@@ -38,15 +38,15 @@
             <div id="home-builder-descri">
                 <div>
                     <h3>Assembler nos produits !</h3>
-                    <p>Grace a notre <a href"#">builder</a> vous pourrez plancher sur l'assemblage de nos produits pour créer votre bonheur !</p>
+                    <p>Grace a notre <a class="mya" href="{{ path("app_builder") }}">builder</a> vous pourrez plancher sur l'assemblage de nos produits pour créer votre bonheur !</p>
                 </div>
                 <div>
                     <h3>Créer votre propre produit !</h3>
-                    <p>Une image vous tiens a coeur et vous aimeriez l'avoir sur une planche ? Pas de soucis on vous le fait ! <a href="#">Pray</a></p>
+                    <p>Une image vous tiens a coeur et vous aimeriez l'avoir sur une planche ? Pas de soucis on vous le fait ! <a class="mya" href="#">Pray</a></p>
                 </div>
                 <div>
                     <h3>Regarder les créations des autres utilisateurs !</h3>
-                    <p>D'autre plancheurs ont peut-être dêjà ce que vous souhaiter ?<a href="">redirect boutique filter:custom</a></p>
+                    <p>D'autre plancheurs ont peut-être dêjà ce que vous souhaiter ?<a class="mya" href="">redirect boutique filter:custom</a></p>
                 </div>
             </div>
             <div>

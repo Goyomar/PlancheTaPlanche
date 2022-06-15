@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ProduitRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Monolog\DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProduitRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=ProduitRepository::class)
@@ -45,7 +46,7 @@ class Produit
     private $promo;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="string")
      */
     private $taille;
 
@@ -95,6 +96,7 @@ class Produit
         $this->skateboards = new ArrayCollection();
         $this->etoiles = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
+        $this->created_at = new DateTimeImmutable('now');
     }
 
     public function getId(): ?int
@@ -164,7 +166,7 @@ class Produit
 
     public function getTaille(): ?string
     {
-        return json_decode(implode($this->taille));
+        return $this->taille;
     }
 
     public function setTaille(string $taille): self

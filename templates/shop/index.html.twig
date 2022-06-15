@@ -26,7 +26,7 @@
     {% for produit in produits %}
         {% set cat = produit.categorie.nom %}
         <div class="card">
-            <a href="{{ path("show_shop", {'slug':produit.slug}) }}" class="mya"><img src="{{ asset(produit.image) }}" alt="{{ produit.slug }}">
+            <a href="{{ path("show_shop", {'slug':produit.slug}) }}" class="mya"><img src="{{ asset('img_produit/' ~ produit.image) }}" alt="{{ produit.slug }}">
             <p>{{ produit.nom }}</p></a>
             <div>
                 <span>Taille :{{ produit.taille }}</span>
@@ -35,7 +35,7 @@
             <div>
                 <span><i class="fa-solid fa-star star"></i>({{ produit.averageEtoiles }})</span>
 
-                {% if app.session.get("builder")[cat] != null %}
+                {% if app.session.get("builder")[cat] %}
                     {% if app.session.get("builder")[cat].nom is same as(produit.nom) %}
                         <a href="{{ path("del_builder", {'slug':produit.slug}) }}"><i class="fa-solid fa-screwdriver mya"></i></a>
                     {% else %}
@@ -45,7 +45,7 @@
                     <a href="{{ path("add_builder", {'slug':produit.slug}) }}"><i class="fa-solid fa-screwdriver"></i></a>
                 {% endif %}
 
-                {% if produit in app.user.wishlist %}
+                {% if app.user and produit in app.user.wishlist %}
                     <a href="{{ path("del_wishlist", {'slug':produit.slug}) }}"><i class="fa-regular fa-heart mya"></i></a>
                 {% else %}
                     <a href="{{ path("add_wishlist", {'slug':produit.slug}) }}"><i class="fa-regular fa-heart"></i></a>

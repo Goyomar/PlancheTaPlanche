@@ -7,7 +7,7 @@
 
 <section id="show-shop-box">
     <div>
-        <img src="{{ asset(produit.image) }}" alt="image produit">
+        <img src="{{ asset('img_produit/' ~ produit.image) }}" alt="image produit">
     </div>
     <div id="show-shop-descri">
         <p class="center">{{ produit.description }}</p>
@@ -27,7 +27,7 @@
                 <a href="{{ path("add_builder", {'slug':produit.slug}) }}"><i class="fa-solid fa-screwdriver fa-2xl"></i></a>
             {% endif %}
 
-            {% if produit in app.user.wishlist %}
+            {% if app.user and produit in app.user.wishlist %}
                 <a href="{{ path("del_wishlist", {'slug':produit.slug}) }}"><i class="fa-regular fa-heart fa-2xl a-delete"></i></a>
             {% else %}
                 <a href="{{ path("add_wishlist", {'slug':produit.slug}) }}"><i class="fa-regular fa-heart fa-2xl"></i></a>
@@ -59,7 +59,7 @@
         {% endif %}
     {% endif %}    
     </div>
-    <p>{{ produit.etoiles|length }} {{ (produit.etoiles|length > 1) ? "votes" : "vote" }} (note : {{ produit.averageEtoiles }} / 5)</p>
+    <p>{{ produit.etoiles|length }} {{ (produit.etoiles|length > 1) ? "votes" : "vote" }} (note <i class="fa-solid fa-star star"></i> : {{ produit.averageEtoiles }} / 5)</p>
 </section>
 <hr>
 <section>

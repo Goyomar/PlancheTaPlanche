@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Produit;
 use App\Entity\Skateboard;
 use App\Form\SkateboardType;
+use Monolog\DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,10 +39,10 @@ class BuilderController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){ // a test
             if ($this->getUser()) {
-                if($builderSession["grip"]->getCategorie() === "grip" && $builderSession["board"]->getCategorie() === "board" &&
-                    $builderSession["screws"]->getCategorie() === "screws" && $builderSession["truck"]->getCategorie() === "truck" &&
-                    $builderSession["bearings"]->getCategorie() === "bearings" && $builderSession["wheels"]->getCategorie() === "wheels") {
-                    $skateboard->setCreatedAt(new \DateTime()) // si le builder est pleinement remplie et que l'utilisateur est connecté
+                if($builderSession["grip"]->getCategorie()->getNom() === "grip" && $builderSession["board"]->getCategorie()->getNom() === "board" &&
+                    $builderSession["screws"]->getCategorie()->getNom() === "screws" && $builderSession["truck"]->getCategorie()->getNom() === "truck" &&
+                    $builderSession["bearings"]->getCategorie()->getNom() === "bearings" && $builderSession["wheels"]->getCategorie()->getNom() === "wheels") {
+                    $skateboard->setCreatedAt(new \DateTimeImmutable()) // si le builder est pleinement remplie et que l'utilisateur est connecté
                                ->setUser($this->getUser()) // j'alimente l'objet avec les infos manquantes
                                ->addComposer($builderSession["grip"]) // j'alimente le manytomany avec chaque objet
                                ->addComposer($builderSession["board"])
@@ -72,6 +73,14 @@ class BuilderController extends AbstractController
             'form' => $form->createView(),
             'builder' => $builderSession
         ]);
+    }
+
+    /**
+     * @Route("/builder/show", name="show_builder")
+     */
+    public function showBuilder()
+    {
+        return $this->render('builder/show.html.twig', []);
     }
 
     /**
