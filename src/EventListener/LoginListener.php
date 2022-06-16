@@ -11,22 +11,24 @@ class LoginListener{
 
     public function __construct(ManagerRegistry $doctrine)
     {
-        $this->em = $doctrine->getManager();
+        $this->doctrine = $doctrine;
     }
 
     public function onSecurityAuthenticationSuccess(AuthenticationEvent $event)
     {
         $user = $event->getAuthenticationToken()->getUser();
 
-        $commande = new Commande();
-        $commande->setNumero($commande->generateNumeroCommande())
-                 ->setCreatedAt(new \DateTimeImmutable())
-                 ->setTotal(0)
-                 ->setUser($user)
-                 ->setIsDelivered(false)
-                 ->setIsOrdered(false);
-        
-        $this->em->persist($commande);
-        $this->em->flush();
+        if (!$this->doctrine->getRepository(Commande::class)->findCurrentOrder($user->getId())){
+            $commande = new Commande();
+            $commande->setNumero($commande->generateNumeroCommande())
+                    ->setCreatedAt(new \DateTimeImmutable())
+                    ->setTotal(0)
+                    ->setUser($user)
+                    ->setIsDelivered(false)
+                    ->setIsOrdered(false);
+            
+            $this->doctrine->getManager()->persist($commande);
+            $this->doctrine->getManager()->flush();
+        }
     }
 }

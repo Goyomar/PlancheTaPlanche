@@ -5,7 +5,7 @@
 {% block body %}
 
 <div class="center">
-    <h1>Builder</h1>
+    <h1 class="titre">Builder</h1>
     <div id="builder">
         <div id="builder-left">
 
@@ -40,7 +40,10 @@
         </div>
     </div>
     
-    <p>Coucou</p>
+    <div class="titre">
+        <a class="btn-danger" href="{{ path("reset_builder") }}">RESET</a>
+        <a class="btn-send" href="{{ path("transform_builder") }}">CART</a>
+    </div>
 </div>
 
 {% endblock %}

@@ -31,6 +31,18 @@ class ShopController extends AbstractController
         $productsPerPage = 9; // le nb de produits que l'on affiche par page
         $sortBarForm = $this->createForm(SortBarType::class);
 
+        if (!$session->get("builder")) {
+            $builderSession = [
+                "grip" => null,
+                "board" => null,
+                "screws" => null,
+                "truck" => null,
+                "bearings" => null,
+                "wheels" => null
+            ];
+            $session->set("builder", $builderSession);
+        }
+
         // STOCKER le resultat dans la session ou créer une session
         if (!$session->get("filter")) {
             $filterSession = [
