@@ -75,7 +75,7 @@ class ShoppingController extends AbstractController
     }
 
     /**
-     * @Route("/panier/delete/{slug}", name="del_panier")
+     * @Route("/panier/delete/{id}", name="del_panier")
      */
     public function delPanier(ManagerRegistry $doctrine, Panier $panier, Request $request)
     {

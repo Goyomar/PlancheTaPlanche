@@ -33,7 +33,7 @@
                 <span class="price">{{ produit.prix }} €</span>
             </div>
             <div>
-                <span><i class="fa-solid fa-star star"></i>({{ produit.averageEtoiles }})</span>
+                <span><i class="fa-solid fa-star star"></i>{{ (produit.averageEtoiles == 0) ? "New" : produit.averageEtoiles }}</span>
 
                 {% if app.session.get("builder")[cat] %}
                     {% if app.session.get("builder")[cat].nom is same as(produit.nom) %}

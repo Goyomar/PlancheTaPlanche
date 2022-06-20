@@ -4,7 +4,11 @@ namespace App\Controller;
 
 use App\Form\UserType;
 use App\Entity\Adresse;
+use App\Entity\Commande;
+use App\Form\AdresseType;
+use App\Entity\Skateboard;
 use App\Form\ResetPasswordType;
+use App\Repository\SkateboardRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,11 +21,28 @@ class AccountController extends AbstractController
     /**
      * @Route("/account", name="app_account")
      */
-    public function index(): Response
+    public function index(ManagerRegistry $doctrine, Request $request): Response
     {
+        $user = $this->getUser();
+        $planches = $doctrine->getRepository(Skateboard::class)->findBy(["user" => $user]);
+        $commandes = $doctrine->getRepository(Commande::class)->findBuyedOrder($user);
+
+        $form = $this->createForm(AdresseType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $adresse = new Adresse();
+            $adresse->setUser($this->getUser())
+                    ->setAdresse($form->get('adresse')->getData())
+                    ->setVille($form->get('ville')->getData())
+                    ->setCp($form->get('cp')->getData());
+            $doctrine->getManager()->persist($adresse);
+            $doctrine->getManager()->flush();
+        }
         
         return $this->render('account/index.html.twig', [
-            'commandes' => $this->getUser()->getCommandes()
+            'commandes' => $commandes,
+            'planches' => $planches,
+            "form" => $form->createView()
         ]);
     }
 
@@ -32,6 +53,18 @@ class AccountController extends AbstractController
     {
         $this->getUser()->removeAdress($adresse);
         $doctrine->getManager()->flush();
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
+     * @Route("/skateboard/del/{id}", name="del_skateboard")
+     */
+    public function delSkateboard(ManagerRegistry $doctrine, Skateboard $skateboard, Request $request)
+    {
+        $em = $doctrine->getManager();
+        $em->remove($skateboard);
+        $em->flush();
+
         return $this->redirect($request->headers->get('referer'));
     }
 

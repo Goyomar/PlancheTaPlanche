@@ -26,9 +26,9 @@
         <tbody>
             {% for panier in paniers %}
             <tr>
-                <td><a href="{{ path("show_shop", {'slug':panier.produit.slug}) }}" class="mya"><img src="{{ asset(panier.produit.image) }}" alt="{{ panier.produit.slug }}"></a>
+                <td><a href="{{ path("show_shop", {'slug':panier.produit.slug}) }}" class="mya"><img src="{{ asset('img_produit/' ~ panier.produit.image) }}" alt="{{ panier.produit.slug }}"></a>
                 <a href="{{ path("show_shop", {'slug':panier.produit.slug}) }}" class="mya">{{ panier.produit }}</a>
-                <a href="{{ path("del_panier", {'slug':panier.produit.slug}) }}" class="a-delete">Supprimer</a></td>
+                <a href="{{ path("del_panier", {'id':panier.id}) }}" class="a-delete">Supprimer</a></td>
                 <td class="center">{{ panier.produit.prix }} €</td>
                 <td class="center qte"><a href="{{ path("plus_panier", {'slug':panier.produit.slug}) }}">+</a>{{ panier.qte }}<a href="{{ path("minus_panier", {'slug':panier.produit.slug}) }}">-</a></td>
                 <td class="center">{{ panier.produit.promo == null ? "" : panier.produit.promo ~" %"}}</td>

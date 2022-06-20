@@ -1,5 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
 *{
-    font-family: "Lucida Console", "sans-serif", monospace;;
+    font-family: "Ubuntu", "sans-serif", monospace;;
     box-sizing: border-box;
 }
 html{

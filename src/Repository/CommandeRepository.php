@@ -55,4 +55,15 @@ class CommandeRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findBuyedOrder($userId): ?Commande
+    {
+        return $this->createQueryBuilder('c')
+            ->Where('c.is_ordered = 1')
+            ->andWhere('c.user = :val')
+            ->setParameter('val', $userId)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

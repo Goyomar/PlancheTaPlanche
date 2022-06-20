@@ -5,23 +5,24 @@
 {% block body %}
 
 <div class="center">
-    <h1>Nom Skateboard</h1>
-    <p>Description Skateboard</p>
+    <h1>{{ skateboard }}</h1>
+    <p>{{ skateboard.description }}</p>
 </div>
-
+{% set total = 0 %}
 <div class="card-list-builder">
-    {% for produit in app.session.get("builder") %}
+    {% for produit in skateboard.composer %}
         {% if produit is not null %}
+            {% set total = total + produit.prix %}
             {% set cat = produit.categorie.nom %}
             <div class="card">
-                <a href="{{ path("show_shop", {'slug':produit.slug}) }}" class="mya"><img src="{{ asset(produit.image) }}" alt="{{ produit.slug }}">
+                <a href="{{ path("show_shop", {'slug':produit.slug}) }}" class="mya"><img src="{{ asset('img_produit/' ~ produit.image) }}" alt="{{ produit.slug }}">
                 <p>{{ produit.nom }}</p></a>
                 <div>
                     <span>Taille :{{ produit.taille }}</span>
                     <span class="price">{{ produit.prix }} €</span>
                 </div>
                 <div>
-                    <span><i class="fa-solid fa-star star"></i>({{ produit.averageEtoiles }})</span>
+                    <span><i class="fa-solid fa-star star"></i>{{ (produit.averageEtoiles == 0) ? "New" : produit.averageEtoiles }}</span>
 
                     {% if app.session.get("builder")[cat] != null %}
                         {% if app.session.get("builder")[cat].nom is same as(produit.nom) %}
@@ -43,6 +44,11 @@
             </div>
         {% endif %}
     {% endfor %}
+</div>
+
+<div>
+    <p>Prix total : {{ total }} €</p>
+    <p><a class="btn-send" href="{{ path("transform_skateboard", {'skateboard':skateboard.id}) }}">Cart</a></p>
 </div>
 
 {% endblock %}

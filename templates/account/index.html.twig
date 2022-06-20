@@ -4,45 +4,98 @@
 
 {% block body %}
 
+<div class="center">
+    <h1>Mon compte</h1>
 
-<h1 class="center">Mon compte</h1>
+    <h2>Planches</h2>
+    {% if planches is not empty %}
+        <table class="table-recap">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Crée le</th>
+                    <th>Supprimer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for planche in planches %}
+                <tr>
+                    <td class="center"><a class="mya" href="{{ path("show_builder", {'skateboard':planche.id}) }}">{{ planche }}</a></td>
+                    <td class="center">{{ planche.createdAt|date('d-m-Y') }}</td>
+                    <td class="center"><a href="{{ path("del_skateboard", {'id':planche.id}) }}" class="a-delete">Supprimer</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Vous n'avez pas de planche enregistré, n'hésiter pas a en créer une dans le <a class="mya" href="{{ path("app_builder") }}">builder</a> !</p>
+    {% endif %}
 
-<ul>
-    <li>Nom : {{ app.user.nom }}</li>
-    <li>Prenom : {{ app.user.prenom }}</li>
-    <li>Compte crée le : {{ app.user.createdAt|date('d-m-Y') }}</li>
-    <li>Email : {{ app.user.email }}</li>
-</ul>
+    
 
-<a class="mya btn-account" href="{{ path("edit_account") }}">Modifier</a>
+    <h2>Informations personelles</h2>
+    <ul>
+        <li>Nom : {{ app.user.nom }}</li>
+        <li>Prenom : {{ app.user.prenom }}</li>
+        <li>Compte crée le : {{ app.user.createdAt|date('d-m-Y') }}</li>
+        <li>Email : {{ app.user.email }}</li>
+    </ul>
 
-<ul>
-    {% for adresse in app.user.adresses %}
-        <li>{{ adresse }} <a href="{{ path('del_adresse',{id:adresse.id}) }}" class="a-delete">Supprimer</a></li>
-    {% endfor %}
-</ul>
+    <a class="mya btn-account" href="{{ path("edit_account") }}">Modifier</a>
 
-{% if commandes is not empty %}
-    <table class="table-recap">
-        <thead>
-            <tr>
-                <th>N°Commande</th>
-                <th>Total</th>
-                <th>Achetée le</th>
-                <th>Pdf</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for commande in commandes %}
-            <tr>
-                <td class="center">{{ commande }}</td>
-                <td class="center qte">{{ commande.total }} €</td>
-                <td class="center">{{ commande.createdAt|date('d-m-Y') }}</td>
-                <td class="center"></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% endif %}
+    <h2>Adresses</h2>
+    {% if app.user.adresses is not empty %}
+    <ul>
+        {% for adresse in app.user.adresses %}
+            <li>{{ adresse }} <a href="{{ path('del_adresse',{id:adresse.id}) }}" class="a-delete">Supprimer</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <button class="btn-account" id="form-trigger">Créer</button>
+    <div class="dnone" id="form">
+        {{ form_start(form) }}
+        {{ form_end(form) }}
+    </div>
 
+    <h2>Commandes</h2>
+    {% if commandes is not empty %}
+    
+        <table class="table-recap">
+            <thead>
+                <tr>
+                    <th>N°Commande</th>
+                    <th>Total</th>
+                    <th>Achetée le</th>
+                    <th>Pdf</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for commande in commandes %}
+                <tr>
+                    <td class="center">{{ commande }}</td>
+                    <td class="center qte">{{ commande.total }} €</td>
+                    <td class="center">{{ commande.createdAt|date('d-m-Y') }}</td>
+                    <td class="center"></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <p>Vous n'avez pas encore passé commande chez nous !</p>
+    {% endif %}
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    let form = document.querySelector("#form")
+    let trigger = document.querySelector("#form-trigger")
+
+    trigger.addEventListener("click", function() {
+        form.classList.toggle("dnone")
+        trigger.classList.add("dnone")
+    })
+</script>
 {% endblock %}

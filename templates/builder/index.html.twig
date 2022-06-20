@@ -40,6 +40,14 @@
         </div>
     </div>
     
+    {% set total = 0 %}
+    {% for item in builder %}
+        {% if item %}
+            {% set total = total + item.prix %}
+        {% endif %}
+    {% endfor %}
+    <p>Prix total : {{ total }} €</p>
+    
     <div class="titre">
         <a class="btn-danger" href="{{ path("reset_builder") }}">RESET</a>
         <a class="btn-send" href="{{ path("transform_builder") }}">CART</a>

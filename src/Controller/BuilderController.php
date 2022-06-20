@@ -47,16 +47,24 @@ class BuilderController extends AbstractController
                     $em = $doctrine->getManager();
                     
                     $skateboard->setCreatedAt(new \DateTimeImmutable()) // si le builder est pleinement remplie et que l'utilisateur est connecté
-                               ->setUser($this->getUser()); // j'alimente l'objet avec les infos manquantes
-                               
-                    $em->persist($skateboard); // je sauvegarde
+                               ->setUser($this->getUser()); // j'alimente l'objet avec les infos manquantes                                                           
 
-                    $skateboard->addComposer($builderSession["grip"]) // j'alimente le manytomany avec chaque objet
-                               ->addComposer($builderSession["board"])
-                               ->addComposer($builderSession["screws"])
-                               ->addComposer($builderSession["truck"])
-                               ->addComposer($builderSession["bearings"])
-                               ->addComposer($builderSession["wheels"]);
+                               $grip = $doctrine->getRepository(Produit::class)->find($builderSession["grip"]->getId());
+                               $board = $doctrine->getRepository(Produit::class)->find($builderSession["board"]->getId());
+                               $screws = $doctrine->getRepository(Produit::class)->find($builderSession["screws"]->getId());
+                               $bearings = $doctrine->getRepository(Produit::class)->find($builderSession["bearings"]->getId());
+                               $wheels = $doctrine->getRepository(Produit::class)->find($builderSession["wheels"]->getId());
+                               $truck = $doctrine->getRepository(Produit::class)->find($builderSession["truck"]->getId());
+
+                            $skateboard->addComposer($grip)
+                                ->addComposer($board)
+                                ->addComposer($screws)
+                                ->addComposer($bearings)
+                                ->addComposer($wheels)
+                                ->addComposer($truck);
+                               
+
+                    $em->persist($skateboard); // je sauvegarde
                     $em->flush();
                     $builderSession = [ // je reset le builder
                         "grip" => null,
@@ -67,7 +75,7 @@ class BuilderController extends AbstractController
                         "wheels" => null
                     ];
                     $session->set("builder",$builderSession);
-                    // return la vue de la planche sur le site ?
+                    return $this->redirectToRoute("show_builder", ["skateboard" => $skateboard->getId()]);
                 }
             }
             
@@ -81,11 +89,13 @@ class BuilderController extends AbstractController
     }
 
     /**
-     * @Route("/builder/show", name="show_builder")
+     * @Route("/builder/show/{skateboard}", name="show_builder")
      */
-    public function showBuilder()
+    public function showBuilder(Skateboard $skateboard)
     {
-        return $this->render('builder/show.html.twig', []);
+        return $this->render('builder/show.html.twig', [
+            'skateboard' => $skateboard
+        ]);
     }
 
     /**
@@ -153,7 +163,7 @@ class BuilderController extends AbstractController
     /**
      * @Route("/builder/transform", name="transform_builder")
      */
-    public function transformBuilder(ManagerRegistry $doctrine, Request $request, Session $session)
+    public function transformBuilder(ManagerRegistry $doctrine, Session $session)
     {
         if ($this->getUser()) { // le panier n'est accessible qu'au utilisateur
             $em = $doctrine->getManager();
@@ -161,7 +171,18 @@ class BuilderController extends AbstractController
             $paniers = $user->getPaniers();
             $commande = $doctrine->getRepository(Commande::class)->findCurrentOrder($user->getId()); // reucpere la commande actuelle
 
-            foreach ($session->get("builder") as $produit) {
+            $builderSession = $session->get("builder"); 
+            
+            $builderToProduit = [];
+            if($builderSession["grip"] != null) {$builderToProduit []= $doctrine->getRepository(Produit::class)->find($builderSession["grip"]->getId());}
+            if($builderSession["board"] != null) {$builderToProduit []= $doctrine->getRepository(Produit::class)->find($builderSession["board"]->getId());}
+            if($builderSession["screws"] != null) {$builderToProduit []= $doctrine->getRepository(Produit::class)->find($builderSession["screws"]->getId());}
+            if($builderSession["bearings"] != null) {$builderToProduit []= $doctrine->getRepository(Produit::class)->find($builderSession["bearings"]->getId());}
+            if($builderSession["wheels"] != null) {$builderToProduit []= $doctrine->getRepository(Produit::class)->find($builderSession["wheels"]->getId());}
+            if($builderSession["truck"] != null) {$builderToProduit []= $doctrine->getRepository(Produit::class)->find($builderSession["truck"]->getId());}
+            
+
+            foreach ($builderToProduit as $produit) {
                 $found = false;
                 if (!empty($paniers)){ // on verifie que l'utilisateur possede deja des article dans son panier
                     foreach($paniers as $panier) { // si c'est le cas on va les parcourir pour savoir si le produit voulu est deja dans un panier
@@ -171,7 +192,7 @@ class BuilderController extends AbstractController
                         }
                     }
                 }
-                if(!$found){ // sinon on lui ajoute le produit receptione en recuperant sa commande actuel
+                if($found == false){ // sinon on lui ajoute le produit receptione en recuperant sa commande actuel
                     $newPanier = new Panier();
                     $newPanier->setQte(1)
                             ->setUser($user)
@@ -207,12 +228,45 @@ class BuilderController extends AbstractController
 
         return $this->redirect($request->headers->get('referer'));
     }
+
+    /**
+     * @Route("/builder/skateboard/transform/{skateboard}", name="transform_skateboard")
+     */
+    public function transformSkateboard(ManagerRegistry $doctrine, Skateboard $skateboard)
+    {
+        if ($this->getUser()) { // le panier n'est accessible qu'au utilisateur
+            $em = $doctrine->getManager();
+            $user = $this->getUser();
+            $paniers = $user->getPaniers();
+            $commande = $doctrine->getRepository(Commande::class)->findCurrentOrder($user->getId()); // reucpere la commande actuelle
+
+            $builderToProduit = $skateboard->getComposer();
+
+            foreach ($builderToProduit as $produit) {
+                $found = false;
+                if (!empty($paniers)){ // on verifie que l'utilisateur possede deja des article dans son panier
+                    foreach($paniers as $panier) { // si c'est le cas on va les parcourir pour savoir si le produit voulu est deja dans un panier
+                        if ($panier->getProduit() === $produit) { // si c'est le cas on augmente la quantite voulu de 1
+                            $panier->setQte( ($panier->getQte() + 1) );
+                            $found = true;
+                        }
+                    }
+                }
+                if($found == false){ // sinon on lui ajoute le produit receptione en recuperant sa commande actuel
+                    $newPanier = new Panier();
+                    $newPanier->setQte(1)
+                            ->setUser($user)
+                            ->setProduit($produit)
+                            ->setCommande($commande);
+
+                    $em->persist($newPanier); // on valide le panier
+                }
+            }    
+            $em->flush(); // et on les sauvegarde 
+            
+            return $this->redirectToRoute("app_panier");
+        } else {
+            return $this->redirectToRoute("app_login");
+        }
+    }
 }
-
-// function transformer en panier, builder en session always un nouveau quand save reset session, quand save avoir son setup dans mon compte, 
-// redirect vers les setups , details setup
-
-
-
-// vue liste des skates et détails
-// dans my account accéder a ses planches et pouvoir les edits
