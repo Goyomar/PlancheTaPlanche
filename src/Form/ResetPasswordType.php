@@ -2,10 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -21,9 +19,7 @@ class ResetPasswordType extends AbstractType
                 'first_options' => ['label' => 'Nouveau mot de passe : ', 'attr' => ['class' => 'input-full']],
                 'second_options' => ['label' => 'Répéter le mot de passe : ', 'attr' => ['class' => 'input-full']]
                 ])
-                
             ->add('reset', SubmitType::class, ['label' => 'Réinitilisater', 'attr' => ['class' => 'btn-danger my-1']])
         ;
     }
-
 }

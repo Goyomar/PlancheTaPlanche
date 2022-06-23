@@ -2,9 +2,14 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\ContactType;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CommunicationController extends AbstractController
 {
@@ -27,9 +32,23 @@ class CommunicationController extends AbstractController
     /**
      * @Route("/contact", name="app_contact")
      */
-    public function contact(): Response
+    public function contact(MailerInterface $mailer, Request $request): Response
     {
-        // Formulaire de contact && template mail a aenvoyer ?
-        return $this->render('communication/contact.html.twig', []);
+        $form = $this->createForm(ContactType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $mail = (new Email())
+                ->from($form->get('email')->getData())
+                ->to(new Address('noreply@ptp.fr', 'ptp noreply'))
+                ->subject($form->get('objet')->getData())
+                ->text($form->get('message')->getData())
+            ;
+
+            $mailer->send($mail);
+            return $this->redirectToRoute("app_home");
+        }
+        return $this->render('communication/contact.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }

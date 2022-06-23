@@ -171,6 +171,19 @@ class ShoppingController extends AbstractController
             dump("coucou Livraison");
         }
 
+        $test = false; // stripe test
+        if ($test == true) {
+            \Stripe\Stripe::setApiKey('sk_test_51LDqZ8LPOjbDcq9QxbyPoszh0lh7Y8Mf6B0DlGPKQ2V7gWQbix7CNhiiBKClPTfzbGUJSimpvKvzDUxk0na7vrEB00Y18gTB8d');
+            $intent = \Stripe\PaymentIntent::create([
+                'amount' => 99.99,
+                'currency' => 'eur'
+            ]);
+            // <script src="https://js.stripe.com/v3/"></script>
+            /* recup le nom prénom du titulaire puis les infos de la cartes numéro, date expi et crypto 
+            bouton de validation avec la clé secréte de stripe $intent["client_secret"] */
+            // insérer stripeCustom.js
+        }
+
         return $this->render('shopping/order.html.twig', [
             'commande' => $user->getPaniers()[0]->getCommande(),
             'paniers' => $user->getPaniers(),

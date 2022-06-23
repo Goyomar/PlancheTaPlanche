@@ -4,7 +4,7 @@
 
 {% block body %}
 <div id="contact-box">
-    <form>
+    {# <form>
         <h1>Contact</h1>
         <p><label>Email :<br>
             <input type="email" name="mail" class="input-full" required>
@@ -16,7 +16,11 @@
             <textarea name="message" class="input-full" required></textarea>
         </label></p>
         <input type="submit" value="Envoyez" class="btn-send">
-    </form>
+    </form> #}
+    <div class="center">
+        {{ form_start(form) }}
+        {{ form_end(form) }}
+    </div>
     <div>
         <img src="/img/contact.png" alt="contact image">
     </div>
