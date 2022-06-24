@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier{% endblock %}
+
+{% block body %}
+
+<div class="center">
+<h1>Merci de votre Achat !</h1>
+
+<p>Un récapitulatif de votre commande a été envoyé par mail ainsi qu'une facture au format PDF.<br>
+La commande sera expédié dans les plus bref délais, merci de nous faire confiance et au plaisir de vous revoir !</p>
+
+<a class="btn-action" href="{{ path('app_home') }}">Home</a>
+</div>
+{% endblock %}

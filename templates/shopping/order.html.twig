@@ -22,7 +22,7 @@
             <tbody>
                 {% for panier in paniers %}
                 <tr>
-                    <td><a href="{{ path("show_shop", {'slug':panier.produit.slug}) }}" class="mya"><img src="{{ asset(panier.produit.image) }}" alt="{{ panier.produit.slug }}"></a>
+                    <td><a href="{{ path("show_shop", {'slug':panier.produit.slug}) }}" class="mya"><img src="{{ asset('img_produit/' ~ panier.produit.image) }}" alt="{{ panier.produit.slug }}"></a>
                     <a href="{{ path("show_shop", {'slug':panier.produit.slug}) }}" class="mya">{{ panier.produit }}</a>
                     <td class="center">{{ panier.produit.prix }} €</td>
                     <td class="center qte">{{ panier.qte }}</td>
@@ -36,7 +36,7 @@
 
         <p><strong>Total : {{ total }} €</strong></p>
     
-        <form method="post">
+        {# <form method="post">
             <div id="order-adress">
 
                 <div id="order-adress-factu">
@@ -54,10 +54,53 @@
                 </div>
             </div>
         <input type="submit" class="btn-action" value="Payer">
+        </form> #}
+
+        <form method="post" id="payment-form">
+            <div>
+                <p>Adresse de facturation</p>
+                <input type="text" name="adresseFactu" placeholder="Adresse" class="input-full">
+                <input type="text" name="villeFactu" placeholder="Ville" class="input-full">
+                <input type="text" name="cpFactu" placeholder="CP" class="input-full">
+                {% if app.user.adresses is not empty %}
+                <br><select name="fullAdresseFactu">
+                    <option value="">--Choisisez une adresse--</option>
+                        {% for adresse in app.user.adresses %}
+                            <option value="{{ adresse.id }}">{{ adresse }}</option>
+                        {% endfor %}
+                </select>
+                {% endif %}
+            </div>
+            <div>
+                <p>Adresse de livraison</p>
+                <input type="text" name="adresseLivraison" placeholder="Adresse" class="input-full">
+                <input type="text" name="villeLivraison" placeholder="Ville" class="input-full">
+                <input type="text" name="cpLivraison" placeholder="CP" class="input-full">
+                {% if app.user.adresses is not empty %}
+                    <br><select name="fullAdresseLivraison">
+                        <option value="">--Choisisez une adresse--</option>
+                        {% for adresse in app.user.adresses %}
+                            <option value="{{ adresse.id }}">{{ adresse }}</option>
+                        {% endfor %}
+                    </select>
+                {% endif %}
+            </div>
+            <div>
+                <label>Informations de payements</label>
+                <div id="card-element"></div>
+                <div id="card-errors" role="alert"></div>
+            </div>
+            <input type="hidden" name="_csrf_token"value="{{ csrf_token('payment') }}">
+            <button>Payer</button>
         </form>
     </div>
 
 
 {# PAYMENT API #}
 
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="/js/stripeCustom.js"></script>
 {% endblock %}

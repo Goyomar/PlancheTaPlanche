@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Stripe\Stripe;
 use App\Entity\Panier;
 use App\Entity\Produit;
 use App\Entity\Commande;
@@ -157,39 +158,41 @@ class ShoppingController extends AbstractController
     /**
      * @Route("/order", name="order")
      */
-    public function order()
+    public function order(Request $request, ManagerRegistry $doctrine)
     {
         $user = $this->getUser();
-        $formLivraison = $this->createForm(AdresseType::class);
-        $formFactu = $this->createForm(AdresseType::class);
+        $commande = $doctrine->getRepository(Commande::class)->findCurrentOrder($user->getId());
+        $paniers = $commande->getPaniers();
 
-        if ($formFactu->isSubmitted() && $formFactu->isValid()){ // a modifier en prenant en compte API PAYMENT
-            dump("coucou Factu");
+        $amount = 0;
+        foreach ($paniers as $panier) {
+            $amount += $panier->getTotal();
         }
 
-        if ($formLivraison->isSubmitted() && $formLivraison->isValid()){// a modifier en prenant en compte API PAYMENT
-            dump("coucou Livraison");
-        }
-
-        $test = false; // stripe test
-        if ($test == true) {
+        if ($request->request->get('stripeToken') && 
+        ($request->request->get('fullAdresseFactu') || 
+        ($request->request->get('adresseFactu') && $request->request->get('villeFactu') && $request->request->get('cpFactu'))) &&
+        ($request->request->get('fullAdresseLivraison') || 
+        ($request->request->get('adresseLivraison') && $request->request->get('villeLivraison') && $request->request->get('cpLivraison'))) ) {
+            
+            dump($request->request->get('fullAdresseFactu'));
+            dump($request->request->get('fullAdresseLivraison'));
             \Stripe\Stripe::setApiKey('sk_test_51LDqZ8LPOjbDcq9QxbyPoszh0lh7Y8Mf6B0DlGPKQ2V7gWQbix7CNhiiBKClPTfzbGUJSimpvKvzDUxk0na7vrEB00Y18gTB8d');
-            $intent = \Stripe\PaymentIntent::create([
-                'amount' => 99.99,
-                'currency' => 'eur'
+            $intent = \Stripe\Charge::create([
+                'amount' => $amount*100, // on veut le montant en centimes
+                'currency' => 'eur',
+                'source' => $request->request->get('stripeToken'),
+                'description' => $user->getNom()." ".$user->getPrenom()." order number ".$commande
             ]);
-            // <script src="https://js.stripe.com/v3/"></script>
-            /* recup le nom prénom du titulaire puis les infos de la cartes numéro, date expi et crypto 
-            bouton de validation avec la clé secréte de stripe $intent["client_secret"] */
-            // insérer stripeCustom.js
+
+            // TRAITER FACTURE/RESET PANIER, CREER NOUVEL FACTURE, CREER PDF, ENVOIE MAIL
+            return $this->render('shopping/thankYou.html.twig', []);
         }
 
         return $this->render('shopping/order.html.twig', [
-            'commande' => $user->getPaniers()[0]->getCommande(),
-            'paniers' => $user->getPaniers(),
+            'commande' => $commande,
+            'paniers' => $paniers,
             'adresses' => $user->getAdresses(),
-            'formLivraison' => $formLivraison->createView(),
-            'formFactu' => $formFactu->createView()
         ]);
     }
 }

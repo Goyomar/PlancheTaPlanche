@@ -1,39 +1,38 @@
-wiwnfow.onLoad = function() {
-    let stripe = Stripe('pk_test_51LDqZ8LPOjbDcq9QBhSJKYpUFuKpQ2H4AIexHu2LecrdIAdnzCYDnep2OvARmuGidnLfGsStBHlsIXCerr2m5DQO00YVrBRML1')
-    let elements = stripe.elements()
-    let redirect = "/"
+let stripe = Stripe('pk_test_51LDqZ8LPOjbDcq9QBhSJKYpUFuKpQ2H4AIexHu2LecrdIAdnzCYDnep2OvARmuGidnLfGsStBHlsIXCerr2m5DQO00YVrBRML1')
+let elements = stripe.elements()
 
-    let cardHolderName = "" // récup le nom de l'utilisateur en JS
-    let carButton = // recup info de carte dans formulaire
-    let clientSecret = cardButton.dataset.secret // la ou j'ai mis la clé secrete
+let card = elements.create("card")
+card.mount("#card-element")
 
-    let card = elements.create("card")
-    card.mount("#card-element")
+card.addEventListener("change", (event) => {
+    let displayError = document.getElementById("card-errors")
+    if(event.error){
+        displayError.textContent = event.error.message;
+    }else{
+        displayError.textContent = "";
+    }
+})
 
-    // génére le bon message d'erreur a voir si ca marche
-    card.addEventListener("change", (event) => {
-        let displayError = document.getElementById("card-errors")
-        if(event.error){
-            displayError.textContent = event.error.message;
-        }else{
-            displayError.textContent = "";
+var form = document.getElementById('payment-form')
+form.addEventListener('submit', function(event) {
+    event.preventDefault()
+
+    stripe.createToken(card).then(function(result) {
+        if(result.error) {
+            var errorElement = document.getElementById('card-errors')
+            errorElement.textContent = result.error.message
+        } else {
+            stripeTokenHandler(result.token)
         }
     })
+})
 
-        // On gère le paiement
-        cardButton.addEventListener("click", () => {
-            stripe.handleCardPayment(
-                clientSecret, card, {
-                    payment_method_data: {
-                        billing_details: {name: cardHolderName.value}
-                    }
-                }
-            ).then((result) => {
-                if(result.error){
-                    document.getElementById("errors").innerText = result.error.message
-                }else{
-                    document.location.href = redirect
-                }
-            })
-        })
+function stripeTokenHandler(token) {
+    var form = document.getElementById('payment-form')
+    var hiddenInput = document.createElement('input')
+    hiddenInput.setAttribute('type', 'hidden')
+    hiddenInput.setAttribute('name', 'stripeToken')
+    hiddenInput.setAttribute('value', token.id)
+    form.appendChild(hiddenInput)
+    form.submit()
 }
