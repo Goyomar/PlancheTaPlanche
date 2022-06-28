@@ -6,6 +6,7 @@ use App\Entity\Adresse;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -27,7 +28,14 @@ class AdresseType extends AbstractType
             ->add('cp', TextType::class, [
                 'required' => true,
                 'label' => 'Code postal :',
-                'attr' => ['class' => 'input-full']
+                'attr' => ['class' => 'input-full'],
+                'constraints' => [
+                        new Regex([
+                            'pattern' => "/^[0-9]{0,10}+$/",
+                            'match' => true,
+                            'message' => 'Veuillez entrer un code postal valide',
+                        ]),
+                ]
             ])
             ->add('Enregistrer', SubmitType::class, [
                 'label' => 'Enregistrer',

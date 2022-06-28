@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Commande;
 use Monolog\DateTimeImmutable;
 use App\Security\EmailVerifier;
 use App\Form\RegistrationFormType;
@@ -48,6 +49,15 @@ class RegistrationController extends AbstractController
             );
 
             $entityManager->persist($user);
+            $commande = new Commande();
+            $commande->setNumero($commande->generateNumeroCommande())
+                    ->setCreatedAt(new \DateTimeImmutable())
+                    ->setTotal(0)
+                    ->setUser($user)
+                    ->setIsDelivered(false)
+                    ->setIsOrdered(false);
+            
+            $entityManager->persist($commande);
             $entityManager->flush();
 
             // generate a signed url and email it to the user
@@ -59,6 +69,7 @@ class RegistrationController extends AbstractController
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email
+            $this->addFlash('sucess','Votre compte a bien été enregistré !');
 
             return $userAuthenticator->authenticateUser(
                 $user,
@@ -89,7 +100,7 @@ class RegistrationController extends AbstractController
         }
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash('success', 'Votre adresse e-mail a bien été vérifié');
 
         return $this->redirectToRoute('app_register');
     }

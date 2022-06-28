@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ asset("css/style.css") }}">
+        <title>Facture n° {{ commande }}</title>
+    </head>
+    <body>
+
+        <div id="top">
+            <h1>FACTURE</h1>
+            <img src="{{ asset("img/logo_planchetaplanche.png") }}" alt="logo">
+        </div>
+
+        <p>{{ commande.user.nom ~ " " ~ commande.user.prenom }}</p>
+
+        <div id="infoFactu">
+            <div>
+                <strong>Facturé à</strong>
+                <p>
+                    {{ factu.adresse }}<br>
+                    {{ factu.ville }}<br>
+                    {{ factu.cp }}<br>
+                </p>
+            </div>
+
+            <div>
+                <strong>Envoyé à</strong>
+                <p>
+                    {{ livraison.adresse }}<br>
+                    {{ livraison.ville }}<br>
+                    {{ livraison.cp }}
+                </p>
+            </div>
+
+            <div>
+                <p>
+                    n°commande : {{ commande }}<br>
+                    payé le  : {{ commande.createdAt|date('d-m-Y') }}
+                </p>
+            </div>
+        </div>
+
+            <table class="table-recap">
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Prix</th>
+                        <th>Quantité</th>
+                        <th>Promo</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                {% set total = 0 %}
+                <tbody>
+                    {% for panier in commande.paniers %}
+                    <tr>
+                        <td>{{ panier.produit }}</td>
+                        <td>{{ panier.produit.prix }} €</td>
+                        <td>{{ panier.qte }}</td>
+                        <td>{{ panier.produit.promo == null ? "" : panier.produit.promo ~" %"}}</td>
+                        <td>{{ panier.total }} €</td>
+                        {% set total = total + panier.total %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    <div id="right">
+        <p> Montant HT : {{ total * 0.8 }} €</p>
+        <h3>total : {{ total }} €</h3>
+    </diV>
+
+    <h2>MERCI</h2>
+
+    </body>
+</html>

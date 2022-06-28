@@ -328,6 +328,20 @@ footer div{
     margin-bottom: 1em;
 }
 
+.notif-success{
+    background-color: lightgreen;
+    border: 1px solid green;
+}
+.notif-error{
+    background-color: lightcoral;
+    border: 1px solid red;
+}
+.notif-success, .notif-error{
+    width:100%;
+    text-align: center;
+    padding: 1em;
+}
+
 
 .badge{
     height: 24px;

@@ -363,11 +363,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getPaniersTotal(): int
     {
-        $return = 0;
-        foreach ($this->paniers as $panier) {
-            $return += $panier->getQte();
+        $commandes = $this->getCommandes();
+        $nbCommande = count($commandes);
+        if ($nbCommande === 1) {
+            $commande = $commandes[0];
+        } else {
+            $commande = $commandes[$nbCommande-1];
         }
-        return $return;
+        return count($commande->getPaniers());
     }
 
     /**

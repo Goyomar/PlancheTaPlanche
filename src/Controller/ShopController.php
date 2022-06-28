@@ -89,8 +89,6 @@ class ShopController extends AbstractController
         
         $nbPages = ceil($nbProducts / $productsPerPage); // le nombre de lien de pagination pour la vu
 
-        dump($filterSession);
-        // et créer modele carte ! et regler pb taille json
         
         return $this->render('shop/index.html.twig', [
             'sortBarForm' => $sortBarForm->createView(),
@@ -127,16 +125,22 @@ class ShopController extends AbstractController
                 $em = $doctrine->getManager();
                 $em->persist($commentaire);
                 $em->flush();
+
+                $this->addFlash('sucess','Votre commentaire a bien été publié !');
                 return $this->redirectToRoute("show_shop",[
                     'slug' =>$produit->getSlug()
                 ] );
             }
         }
+        $listeCommentaire = $doctrine->getRepository(Commentaire::class)->findBy(
+            ['produit' => $produit->getId(), 'is_active' => true], ['created_at' => 'DESC']
+        );
         
         return $this->render('shop/show.html.twig', [
             'produit' => $produit,
             'commentaireForm' => $commentaireForm->createView(),
-            'vote' => $vote
+            'vote' => $vote,
+            'commentaire' => $listeCommentaire
         ]);
     }
 
@@ -157,7 +161,10 @@ class ShopController extends AbstractController
             $em = $doctrine->getManager(); // envoie en bdd
             $em->persist($etoile);
             $em->flush();
-        } // rajouter un else flash error
+            $this->addFlash('sucess','Votre vote a bien été pris en compte !');
+        } else {
+            $this->addFlash('error','Votre vote n\est pas valide !');
+        }
 
         return $this->redirectToRoute("show_shop",[
             'slug' => $produit->getSlug()
@@ -176,6 +183,9 @@ class ShopController extends AbstractController
             $etoile = $doctrine->getRepository(Etoile::class)->findOneBy(['user' => $this->getUser()->getId(), 'produit' => $produit->getId()]);
             $etoile->setNote($note);
             $doctrine->getManager()->flush();
+            $this->addFlash('sucess','Votre vote a bien été modifié !');
+        } else {
+            $this->addFlash('error','Votre vote n\est pas valide !');
         }
 
         return $this->redirectToRoute("show_shop",[
@@ -191,6 +201,7 @@ class ShopController extends AbstractController
         $em = $doctrine->getManager();
         $em->remove($commentaire);
         $em->flush();
+        $this->addFlash('sucess','Votre commentaire a bien été supprimé !');
 
         return $this->redirect($request->headers->get('referer'));
     }

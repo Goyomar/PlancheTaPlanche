@@ -73,8 +73,7 @@
     </div>
     {% endif %}
     <div id="show-shop-comment">
-    {% for comment in produit.commentaires %}
-        {% if comment.isActive %}
+    {% for comment in commentaire %}
         <div>
             <p><i class="fa-solid fa-circle-user"></i> <strong>{{ comment.user }}</strong> ({{ comment.createdAt|date('d-m-Y') }}) : <br>
             {{ comment }} 
@@ -83,7 +82,6 @@
             {% endif %}    
             </p>
         </div>
-        {% endif %}
     {% endfor %}
     </div>
 </section>

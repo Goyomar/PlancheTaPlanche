@@ -35,26 +35,6 @@
         </table>
 
         <p><strong>Total : {{ total }} €</strong></p>
-    
-        {# <form method="post">
-            <div id="order-adress">
-
-                <div id="order-adress-factu">
-                    <h2>Adresse de facturation</h2>
-                    {{ form_start(formFactu) }}
-
-                    {{ form_end(formFactu) }}
-                </div>
-
-                <div id="order-adress-delivry">
-                    <h2>Adresse de livraison</h2>
-                    {{ form_start(formLivraison) }}
-
-                    {{ form_end(formLivraison) }}
-                </div>
-            </div>
-        <input type="submit" class="btn-action" value="Payer">
-        </form> #}
 
         <form method="post" id="payment-form">
             <div>
@@ -94,9 +74,6 @@
             <button>Payer</button>
         </form>
     </div>
-
-
-{# PAYMENT API #}
 
 {% endblock %}
 

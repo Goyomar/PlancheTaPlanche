@@ -45,6 +45,7 @@ class CommunicationController extends AbstractController
             ;
 
             $mailer->send($mail);
+            $this->addFlash('sucess','Votre message a bien été envoyé, nous vous répondrons au plus vite !');
             return $this->redirectToRoute("app_home");
         }
         return $this->render('communication/contact.html.twig', [

@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -20,8 +21,27 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom', TextType::class, ['label' => 'Nom :', 'attr' => ['placeholder' => 'Dupont', 'class' => 'input-split']])
-            ->add('prenom', TextType::class, ['label' => 'Prénom :', 'attr' => ['placeholder' => 'Thierry', 'class' => 'input-split']])
+            ->add('nom', TextType::class, [
+                'label' => 'Nom :',
+                 'attr' => ['placeholder' => 'Dupont', 'class' => 'input-split'],
+                 'constraints' => [
+                    new Length([
+                        'min' => 1,
+                        'max' => 30,
+                    ]),
+                ],
+            ])
+            ->add('prenom', TextType::class, [
+                'label' => 'Prénom :', 
+                'attr' => ['placeholder' => 'Thierry', 'class' => 'input-split'],
+                'constraints' => [
+                    new Length([
+                        'min' => 2,
+                        'minMessage' => "Le prénom doit posséder 2 caractère minimum",
+                        'max' => 30,
+                    ]),
+                ],
+                ])
             ->add('email', EmailType::class, ['label' => 'Adresse mail :', 'attr' => ['placeholder' => 'do@kickflip.sb', 'class' => 'input-full']])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -29,17 +49,12 @@ class RegistrationFormType extends AbstractType
                 'second_options' => ['label' => 'Répeter mot de passe :', 'attr' => ['placeholder' => 'Repeat Password', 'class' => 'input-full']],
                 'mapped' => false,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
+                    new Regex([
+                        'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
+                        'match' => true,
+                        'message' => 'Le mot de passe doit contenir : min 8 caractère, un nombre, une minuscule, une majuscule et un caractère spécial',
                     ]),
-                    new Length([
-                        'min' => 4,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 30,
-                    ]),
-                    // NEW REGEX
-                ],
+                ]
             ])
             ->add('newletter', CheckboxType::class, [
                 'label' => 'S\'inscrire a la newsletter',

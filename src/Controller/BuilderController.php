@@ -75,8 +75,13 @@ class BuilderController extends AbstractController
                         "wheels" => null
                     ];
                     $session->set("builder",$builderSession);
+                    $this->addFlash('sucess','Votre planche a bien été enregistré !');
                     return $this->redirectToRoute("show_builder", ["skateboard" => $skateboard->getId()]);
+                } else {
+                    $this->addFlash('error','Tout les éléments doivent être présent pour enregistrer la planche !');
                 }
+            } else {
+                $this->addFlash('error','Vous devez être connecté pour enregistrer une planche !');
             }
             
         }
@@ -144,6 +149,7 @@ class BuilderController extends AbstractController
         }
         $builderSession[$product->getCategorie()->getNom()] = $product;
         $session->set("builder", $builderSession);
+        $this->addFlash('sucess','Votre produit a bien été ajouté au builder !');
 
         return $this->redirectToRoute("app_builder");
     }
@@ -156,6 +162,7 @@ class BuilderController extends AbstractController
         $builderSession = $session->get("builder");
         $builderSession[$product->getCategorie()->getNom()] = null; // je sors le produit du builder
         $session->set("builder", $builderSession);
+        $this->addFlash('sucess','Votre produit a bien été suppprimé du builder !');
 
         return $this->redirect($request->headers->get('referer'));
     }
@@ -168,8 +175,8 @@ class BuilderController extends AbstractController
         if ($this->getUser()) { // le panier n'est accessible qu'au utilisateur
             $em = $doctrine->getManager();
             $user = $this->getUser();
-            $paniers = $user->getPaniers();
             $commande = $doctrine->getRepository(Commande::class)->findCurrentOrder($user->getId()); // reucpere la commande actuelle
+            $paniers = $commande->getPaniers();
 
             $builderSession = $session->get("builder"); 
             
@@ -202,10 +209,12 @@ class BuilderController extends AbstractController
                     $em->persist($newPanier); // on valide le panier
                 }
             }    
-            $em->flush(); // et on les sauvegarde 
+            $em->flush(); // et on les sauvegarde
+            $this->addFlash('sucess','Vos produits ont bien été ajouté au panier !');
             
             return $this->redirectToRoute("app_panier");
         } else {
+            $this->addFlash('error','Vous devez être connecté pour ajouter ces produits aux panier !');
             return $this->redirectToRoute("app_login");
         }
     }
@@ -226,6 +235,7 @@ class BuilderController extends AbstractController
         ];
         $session->set("builder", $builderSession);
 
+        $this->addFlash('sucess','Votre builder a bien été réinitialiser !');
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -237,8 +247,8 @@ class BuilderController extends AbstractController
         if ($this->getUser()) { // le panier n'est accessible qu'au utilisateur
             $em = $doctrine->getManager();
             $user = $this->getUser();
-            $paniers = $user->getPaniers();
             $commande = $doctrine->getRepository(Commande::class)->findCurrentOrder($user->getId()); // reucpere la commande actuelle
+            $paniers = $commande->getPaniers();
 
             $builderToProduit = $skateboard->getComposer();
 
@@ -264,8 +274,10 @@ class BuilderController extends AbstractController
             }    
             $em->flush(); // et on les sauvegarde 
             
+            $this->addFlash('sucess','Vos produits ont bien été ajouté au panier !');
             return $this->redirectToRoute("app_panier");
         } else {
+            $this->addFlash('error','Vous devez être connecté pour ajouter ces produits aux panier !');
             return $this->redirectToRoute("app_login");
         }
     }

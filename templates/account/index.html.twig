@@ -75,7 +75,7 @@
                     <td class="center">{{ commande }}</td>
                     <td class="center qte">{{ commande.total }} €</td>
                     <td class="center">{{ commande.createdAt|date('d-m-Y') }}</td>
-                    <td class="center"></td>
+                    <td class="center"><a class="a-delete" href="{{ path("show_pdf_facture", {'numero': commande.numero}) }}"><i class="fa-solid fa-file-pdf"></i></a></td>
                 </tr>
                 {% endfor %}
             </tbody>

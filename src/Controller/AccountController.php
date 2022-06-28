@@ -37,7 +37,9 @@ class AccountController extends AbstractController
                     ->setCp($form->get('cp')->getData());
             $doctrine->getManager()->persist($adresse);
             $doctrine->getManager()->flush();
+            $this->addFlash('sucess','Votre adresse a bien été mis a jour !');
         }
+        dump($commandes);
         
         return $this->render('account/index.html.twig', [
             'commandes' => $commandes,
@@ -53,6 +55,7 @@ class AccountController extends AbstractController
     {
         $this->getUser()->removeAdress($adresse);
         $doctrine->getManager()->flush();
+        $this->addFlash('sucess','Votre adresse a bien été supprimé !');
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -64,6 +67,7 @@ class AccountController extends AbstractController
         $em = $doctrine->getManager();
         $em->remove($skateboard);
         $em->flush();
+        $this->addFlash('sucess','Votre skateboard a bien été supprimé !');
 
         return $this->redirect($request->headers->get('referer'));
     }
@@ -83,6 +87,7 @@ class AccountController extends AbstractController
                  ->setPrenom($form->get('prenom')->getData())
                  ->setEmail($form->get('email')->getData()); // on modifie les informations de l'utilisateur avec la methode associé
             $doctrine->getManager()->flush(); // on applique les modifs
+            $this->addFlash('sucess','Vos informations ont bien été mis a jour !');
 
             return $this->redirectToRoute("app_account"); // on le raméne sur la page d'informations de son compte
         }
@@ -94,6 +99,7 @@ class AccountController extends AbstractController
             if (password_verify($oldPass, $user->getPassword())) { // on verifie que l'ancien mot de passe coresponde au nouveau
                 $user->setPassword( $userPasswordHasher->hashPassword($user, $newPass) ); // on hash le mot de passe et on l'associe a l'utilisateur
                 $doctrine->getManager()->flush(); // on l'enregistre
+                $this->addFlash('sucess','Votre mot de passe a bien été mis a jour !');
 
                 return $this->redirectToRoute("app_account");
             }
