@@ -6,6 +6,7 @@
 <h1 class="center titre">Boutique</h1>
 <div class="form-full" id="sortBar">
     {{ form_start(sortBarForm) }}
+
     {{ form_label(sortBarForm.categorie) }}
     {{ form_widget(sortBarForm.categorie, {'attr': {'value': app.session.get('filter').categorie} }) }} {# MARCHE PAS CAR SELECT #}
 
@@ -19,6 +20,7 @@
     {{ form_widget(sortBarForm.prixDeux, {'attr': {'value': app.session.get('filter').prixDeux} }) }} €
 
     {{ form_widget(sortBarForm.filtrer) }}
+    
     {{ form_end(sortBarForm) }}
 </div>
 

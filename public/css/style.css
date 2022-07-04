@@ -256,24 +256,24 @@ footer{
     color: white;
     text-align: center;
 }
-footer nav{
+footer #foot-nav{
     display:flex;
     align-items: center;
     justify-content:space-evenly;
 }
-footer nav ul{
+footer #foot-nav ul{
     list-style: none;
     display: flex;
     align-items: center;
     padding-left: 0px;
 }
-footer nav ul li a{
+footer #foot-nav ul li a{
     text-decoration: none;
     text-transform: uppercase;
     color: white;
     padding-right: 10px;
 }
-footer nav ul, footer form{
+footer #foot-nav ul, footer form{
     width:200px;
 }
 footer div{
@@ -286,6 +286,9 @@ footer div{
 /* END FOOTER */
 
 /* CLASS */
+.p-auto{
+    padding: 0 1rem;
+}
 .logo{
     width:100px;
 }
@@ -295,6 +298,11 @@ footer div{
 }
 .dnone{
     display: none;
+}
+.fa-bars, .fa-times{
+    color:white;
+    cursor:pointer;
+    width: 24px;
 }
 .star, .star-bis{
     color:rgb(255, 149, 41);
@@ -526,5 +534,91 @@ footer div{
 /* END CLASS */
 
 /* RESPONSIVE */
+@media screen and (max-width:820px) {
+    .card-list, .card-list-builder, .card-list-shop{
+        grid-template-columns: repeat(2,1fr);
+    }
+    .card-list-shop{
+        grid-template-rows: repeat(5,1fr);
+        row-gap: 1em;
+    }
+    .card-list-builder{
+        grid-template-rows: repeat(3,1fr);
+        row-gap: 1em;
+    }
+    .card-list{
+        grid-template-rows: repeat(2,1fr);
+    }
+    #pagination ul{
+        flex-direction:column;
+    }
+    #pagination ul li{
+        margin-bottom:10px;
+    }
+    #sortBar form{
+        display:flex;
+        flex-direction:column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    header nav{
+        flex-wrap: wrap;
+    }
+    header nav ul{
+        display:none;
+        flex-direction:column;
+        height:250px;
+        justify-content: space-evenly;
+    }
+    header nav div{
+        display:flex;
+        justify-content:space-around;
+        align-items:center;
+        width:100%;
+    }
+    #burger{
+        display:block;
+    }
+}
+
+@media screen and (max-width:576px) {
+    #banner img, #home-builder div img{
+        display:none;
+    }
+    #banner h1{
+        position:initial;
+        transform:translate(0,0);
+    }
+    #home-builder{
+        flex-direction:column;
+    }
+    #home-builder-descri{
+        width:100%;
+    }
+    .card-list, .card-list-builder, .card-list-shop{
+        grid-template-columns: repeat(1,1fr);
+        row-gap: 1em;
+    }
+    .card-list-shop{
+        grid-template-rows: repeat(9,1fr);
+    }
+    .card-list-builder{
+        grid-template-rows: repeat(6,1fr);
+    }
+    .card-list{
+        grid-template-rows: repeat(2,1fr);
+    }
+
+    footer #foot-nav{
+        flex-direction: column;
+    }
+    footer #foot-nav form{
+        text-align: center;
+    }
+    footer #foot-nav form input{
+        margin-bottom: 1rem;
+    }
+}
 
 /* END RESPONSIVE */

@@ -13,13 +13,16 @@
     <div id="turboContainer">
         <header>
             <nav>
-                <a href="{{ path('app_home') }}"><img src="/img/logo_planchetaplanche.png" alt="logo" class="logo"></a>
-                <ul>
+                <div>
+                    <a href="{{ path('app_home') }}"><img src="/img/logo_planchetaplanche.png" alt="logo" class="logo"></a>
+                    <i class="fa-solid fa-bars fa-2xl dnone" id="burger"></i>
+                </div>
+                <ul id="menu1">
                     <li><a href="{{ path('app_shop') }}">Boutique</a></li>
                     <li><a href="{{ path('app_builder') }}">Builder</a></li>
                     <li><a href="{{ path('app_contact') }}">Contact</a></li>
                 </ul>
-                <ul>
+                <ul id="menu2">
                     {% if not app.user %}
                     <li><a href="{{ path('app_login') }}">Connexion</a></li>
                     <li><a href="{{ path('app_register') }}">S'enregistrer</a></li>
@@ -51,7 +54,7 @@
             {% block body %}{% endblock %}
         </main>
         <footer>
-            <nav>
+            <div id="foot-nav">
                 <ul>
                     <li><a href="{{ path('app_faq') }}">FAQ</a></li>
                     <li><a href="{{ path('app_legals') }}">Mentions légales</a></li>
@@ -61,7 +64,7 @@
                     <input type="email" name="newsletter" placeholder="trucker67@gmail.com">
                     <input type="submit" value="S'inscrire">
                 </form>
-            </nav>
+            </div id="foot-nav">
             <hr>
             <p>
                 <i class="fa-brands fa-facebook fa-lg"></i>  

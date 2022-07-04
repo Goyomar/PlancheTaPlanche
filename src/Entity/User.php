@@ -365,12 +365,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $commandes = $this->getCommandes();
         $nbCommande = count($commandes);
+
         if ($nbCommande === 1) {
             $commande = $commandes[0];
         } else {
             $commande = $commandes[$nbCommande-1];
         }
-        return count($commande->getPaniers());
+
+        $return = 0;
+        foreach ($commande->getPaniers() as $panier) {
+            $return += $panier->getQte();
+        }
+
+        return $return;
     }
 
     /**
