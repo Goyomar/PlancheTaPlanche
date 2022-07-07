@@ -10,6 +10,7 @@ use App\Entity\Skateboard;
 use App\Form\ResetPasswordType;
 use App\Repository\SkateboardRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -110,5 +111,30 @@ class AccountController extends AbstractController
             'form' => $form->createView(),
             'reset' => $reset->createView()
         ]);
+    }
+
+    /**
+     * @Route("/account/delete", name="delete_account")
+     */
+    public function deleteAcount(ManagerRegistry $doctrine)
+    {
+        $user = $this->getUser();
+        $em = $doctrine->getManager();
+        $commandes = $user->getCommandes();
+        $nbCommande = count($commandes);
+
+        if ($nbCommande === 1) {
+            $em->remove($commandes[0]);
+        } else {
+            $em->remove($commandes[$nbCommande-1]);
+        }
+
+        $newSession = new Session();
+        $newSession->invalidate();
+        
+        $em->remove($user);
+        $em->flush();
+
+        return $this->redirectToRoute("app_home");
     }
 }

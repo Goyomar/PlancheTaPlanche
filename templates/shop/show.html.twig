@@ -10,8 +10,8 @@
         <img src="{{ asset('img_produit/' ~ produit.image) }}" alt="image produit">
     </div>
     <div id="show-shop-descri">
-        <p class="center">{{ produit.description }}</p>
-        <p class="center">
+        <p class="center p-auto">{{ produit.description }}</p>
+        <p class="center p-auto">
             Taille : {{ produit.taille }}<br>
             Categorie : {{ produit.categorie }}<br>
             Prix : <span class="price">{{ produit.prix }} €</span><br>
@@ -75,7 +75,7 @@
     <div id="show-shop-comment">
     {% for comment in commentaire %}
         <div>
-            <p><i class="fa-solid fa-circle-user"></i> <strong>{{ comment.user }}</strong> ({{ comment.createdAt|date('d-m-Y') }}) : <br>
+            <p class="p-auto"><i class="fa-solid fa-circle-user"></i> <strong>{{ comment.user }}</strong> ({{ comment.createdAt|date('d-m-Y') }}) : <br>
             {{ comment }} 
             {% if app.user is same as(comment.user) %}
                 <br><a href="{{ path("del_comment", {'id':comment.id}) }}" class="a-delete">Supprimer</a>
@@ -85,8 +85,5 @@
     {% endfor %}
     </div>
 </section>
-{% endblock %}
-
-{% block javascripts %}
 <script src="{{ asset('js/etoile.js') }}"></script>
 {% endblock %}

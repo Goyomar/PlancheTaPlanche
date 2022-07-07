@@ -5,7 +5,6 @@ let chevron = document.querySelector(".fa-chevron-up").addEventListener("click",
 let burger = document.querySelector("#burger")
 
 let menu = [document.querySelector("#menu1"), document.querySelector("#menu2")]
-console.log(menu)
 
 let flexBreak = document.createElement('div')
 flexBreak.style.flexBasis = "100%"
@@ -31,7 +30,6 @@ burger.addEventListener("click", function() {
 
 window.addEventListener('resize', function() {
     if (window.screen.width > 820 && document.querySelector("#flexbreak")) {
-        console.log(window.screen.width)
         flexBreak.remove()
     } else if (window.screen.width > 820 && menu[0].classList.contains("dnone") && menu[1].classList.contains("dnone")) {
         menu.forEach(element => {

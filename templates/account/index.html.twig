@@ -84,10 +84,16 @@
     {% else %}
         <p>Vous n'avez pas encore passé commande chez nous !</p>
     {% endif %}
+    <button id="myBtn">Supprimer le compte</button>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Etes vous sur vous voulez supprimer votre compte ?<br> Il sera perdu à jamais.</p>
+            <a href="{{path('delete_account')}}" class="mya btn-danger">oui</a>    
+            <a href="{{path('app_account')}}" class="mya btn-account">non</a>
+        </div>
+    </div>
 
 </div>
-{% endblock %}
-
-{% block javascripts %}
 <script src="/js/trigger.js"></script>
 {% endblock %}
