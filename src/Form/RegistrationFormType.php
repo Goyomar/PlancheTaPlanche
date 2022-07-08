@@ -23,7 +23,7 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('nom', TextType::class, [
                 'label' => 'Nom :',
-                 'attr' => ['placeholder' => 'Dupont', 'class' => 'input-split'],
+                 'attr' => ['placeholder' => 'Dupont', 'class' => 'input-full'],
                  'constraints' => [
                     new Length([
                         'min' => 1,
@@ -33,7 +33,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('prenom', TextType::class, [
                 'label' => 'Prénom :', 
-                'attr' => ['placeholder' => 'Thierry', 'class' => 'input-split'],
+                'attr' => ['placeholder' => 'Thierry', 'class' => 'input-full'],
                 'constraints' => [
                     new Length([
                         'min' => 2,

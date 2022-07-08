@@ -6,6 +6,18 @@
 <div>
     <div class="center">
         {{ form_start(form) }}
+            <div>
+                {{ form_label(form.email) }}<br>
+                {{ form_widget(form.email) }}
+            </div>
+            <div>
+                {{ form_label(form.objet) }}<br>
+                {{ form_widget(form.objet) }}
+            </div>
+            <div>
+                {{ form_label(form.message) }}<br>
+                {{ form_widget(form.message) }}
+            </div>
         {{ form_end(form) }}
     </div>
 </div>

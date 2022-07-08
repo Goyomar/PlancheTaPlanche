@@ -7,7 +7,7 @@
 <div class="center">
     <h1>Mon compte</h1>
 
-    <h2>Planches</h2>
+    <h2>Skateboards</h2>
     {% if planches is not empty %}
         <table class="table-recap">
             <thead>
@@ -34,7 +34,7 @@
     
 
     <h2>Informations personelles</h2>
-    <ul>
+    <ul class="myul">
         <li>Nom : {{ app.user.nom }}</li>
         <li>Prenom : {{ app.user.prenom }}</li>
         <li>Compte crée le : {{ app.user.createdAt|date('d-m-Y') }}</li>
@@ -45,7 +45,7 @@
 
     <h2>Adresses</h2>
     {% if app.user.adresses is not empty %}
-    <ul>
+    <ul class="myul">
         {% for adresse in app.user.adresses %}
             <li>{{ adresse }} <a href="{{ path('del_adresse',{id:adresse.id}) }}" class="a-delete">Supprimer</a></li>
         {% endfor %}

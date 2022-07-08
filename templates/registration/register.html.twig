@@ -11,10 +11,11 @@
 
     {{ form_start(registrationForm, {'attr': {'class': 'form-full'}} ) }}
         <h1 class="titre">Création d'un compte client</h1>
-        {{ form_label(registrationForm.nom) }}{{ form_widget(registrationForm.nom) }}
-        {{ form_label(registrationForm.prenom) }}{{ form_widget(registrationForm.prenom) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_widget(registrationForm.plainPassword) }}
+        <div>{{ form_label(registrationForm.nom) }}<br>{{ form_widget(registrationForm.nom) }}</div>
+        <div>{{ form_label(registrationForm.prenom) }}<br>{{ form_widget(registrationForm.prenom) }}</div>
+        <div>{{ form_label(registrationForm.email) }}<br>{{ form_widget(registrationForm.email) }}</div>
+        <div>{{ form_label(registrationForm.plainPassword.first) }}<br>{{ form_widget(registrationForm.plainPassword.first) }}</div>
+        <div>{{ form_label(registrationForm.plainPassword.second) }}<br>{{ form_widget(registrationForm.plainPassword.second) }}</div>
         {{ form_label(registrationForm.agreeTerms) }}{{ form_widget(registrationForm.agreeTerms) }}
         {{ form_label(registrationForm.newletter) }}{{ form_widget(registrationForm.newletter) }}
         <p></p>

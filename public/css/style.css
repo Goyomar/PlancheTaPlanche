@@ -139,19 +139,6 @@ header nav ul li a:hover{
 }
 /* END LEGALS */
 
-/* CONTACT */
-#contact-box, #contact-box div{
-    display: flex;
-    text-align: center;
-}
-#contact-box form{
-    width: 48em;
-}
-#contact-box div img{
-    width:16em;
-}
-/* END CONTACT */
-
 /* SHOP */
 #sortBar{
     background-color: rgb(233, 233, 233);
@@ -249,6 +236,12 @@ header nav ul li a:hover{
 }
 /* END BUILDER */
 
+/* ACCOUNT */
+.myul{
+    padding-left: 0px;
+    list-style: none;
+}
+/* END ACCOUNT */
 
 /* FOOTER */
 footer{
